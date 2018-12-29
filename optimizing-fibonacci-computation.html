@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Yashas's Blog - Yashas Lokesh</title>
+        <title>Optimizing Fibonacci Computation</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
         <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
 </head>
@@ -12,13 +12,18 @@
                 <h1><a href="/">Yashas's Blog </a></h1>
                 <nav><ul>
                     <li><a href="/category/misc.html">misc</a></li>
-                    <li><a href="/category/python.html">Python</a></li>
+                    <li class="active"><a href="/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/optimizing-fibonacci-computation.html" rel="bookmark"
+           title="Permalink to Optimizing Fibonacci Computation">Optimizing Fibonacci Computation</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/optimizing-fibonacci-computation.html">Optimizing Fibonacci Computation</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2018-12-28T08:46:00-05:00">
                 Published: Fri 28 December 2018
@@ -33,7 +38,7 @@
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 <p>tags: <a href="/tag/python.html">python</a> <a href="/tag/algorithms.html">algorithms</a> </p>
-</footer><!-- /.post-info --><p>I posted about this on <a href="https://twitter.com/yashaslokesh_/status/1078510658633846785">Twitter</a> yesterday.</p>
+</footer><!-- /.post-info -->      <p>I posted about this on <a href="https://twitter.com/yashaslokesh_/status/1078510658633846785">Twitter</a> yesterday.</p>
 <p>I've been attempting to study the topic of algorithms this break because one of my classes next semester will cover exactly that. I came upon an MIT series of lectures for a class named "Introduction to Algorithms", and I reached <a href="https://youtu.be/OQ5jsbhAv_M">this video</a> yesterday on dynamic programming.</p>
 <p>The professor says that there is a O(log <em>n</em>) algorithm for computing fibonacci numbers, and I'm instantly intrigued. I assumed that O(<em>n</em>) was the best that could be accomplished because all of the fibonacci functions we used in our classes were written that way.</p>
 <p>I went to <a href="https://en.wikipedia.org/wiki/Fibonacci_number#Matrix_form">this Wikipedia article</a> and started reading.
@@ -137,40 +142,11 @@ still applies for matrices. Along this line of logic, if we want to compute the 
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-</script>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</script>
+    </div><!-- /.entry-content -->
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/My-first-post.html" rel="bookmark"
-                           title="Permalink to My first post">My first post</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-12-28T02:46:00-05:00">
-                Published: Fri 28 December 2018
-        </abbr>
-		<br />
-        <abbr class="modified" title="2018-12-28T02:46:00-05:00">
-                Updated: Fri 28 December 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="/category/misc.html">misc</a>.</p>
-<p>tags: <a href="/tag/first.html">first</a> <a href="/tag/misc.html">misc</a> </p>
-</footer><!-- /.post-info -->                <p>My first post!</p>
-                <a class="readmore" href="/My-first-post.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
