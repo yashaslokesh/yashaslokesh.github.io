@@ -27,7 +27,8 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 
 # Social widget
 SOCIAL = (('My Twitter', 'https://twitter.com/yashaslokesh_'),
-          ('My LinkedIn', 'https://www.linkedin.com/in/yashaslokesh/'),)
+          ('My LinkedIn', 'https://www.linkedin.com/in/yashaslokesh/'),
+          ('My GitHub', 'https://github.com/yashaslokesh'),)
 
 DEFAULT_PAGINATION = 10
 
