@@ -34,3 +34,12 @@ DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
+
+# Adding plug-ins
+PLUGIN_PATHS = ['/Users/lokeshkrishnappa/Documents/GitHub/pelican-plugins']
+# Activate the render_math plugin
+PLUGINS = ['render_math']
+
+## Add static paths
+STATIC_PATHS = ['images', # Add images directory from inside content directory
+                ]
