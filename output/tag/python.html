@@ -4,7 +4,6 @@
         <meta charset="utf-8" />
         <title>Yashas's Blog - python</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
-        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
 </head>
 
 <body id="index" class="home">
@@ -18,71 +17,44 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/optimizing-fibonacci-computation.html">Optimizing Fibonacci Computation</a></h1>
+                    <h1 class="entry-title"><a href="/project-euler-problem-125.html">Project Euler Problem #125</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2018-12-28T08:46:00-05:00">
-                Published: Fri 28 December 2018
+        <abbr class="published" title="2018-12-31T11:58:00-05:00">
+                Published: Mon 31 December 2018
         </abbr>
 		<br />
-        <abbr class="modified" title="2018-12-28T08:46:00-05:00">
-                Updated: Fri 28 December 2018
+        <abbr class="modified" title="2018-12-31T11:58:00-05:00">
+                Updated: Mon 31 December 2018
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/algorithms.html">algorithms</a> </p>
-</footer><!-- /.post-info --><p>I posted about this on <a href="https://twitter.com/yashaslokesh_/status/1078510658633846785">Twitter</a> yesterday.</p>
-<p>I've been attempting to study the topic of algorithms this break because one of my classes next semester will cover exactly that. I came upon an MIT series of lectures for a class named "Introduction to Algorithms", and I reached <a href="https://youtu.be/OQ5jsbhAv_M">this video</a> yesterday on dynamic programming.</p>
-<p>The professor says that there is a O(log <em>n</em>) algorithm for computing fibonacci numbers, and I'm instantly intrigued. I assumed that O(<em>n</em>) was the best that could be accomplished because all of the fibonacci functions we used in our classes were written that way.</p>
-<p>I went to <a href="https://en.wikipedia.org/wiki/Fibonacci_number#Matrix_form">this Wikipedia article</a> and started reading.
-In particular, they list this formula:
-</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/math.html">math</a> </p>
+</footer><!-- /.post-info --><p>Here's the <a href="https://projecteuler.net/problem=125">problem link</a>.</p>
+<p>If you haven't attempted solving this problem, yet, go try it first!!</p>
+<p>The problem wants us to find the sum of all palindromic numbers which can be written as the sum of consecutive squares of integers, under 10 million. This range is small enough that we don't have to do any optimizations, so I brute-forced the search.</p>
+<p>A palindromic number is such that when its reversed, it's still the same number. Some examples: 1, 121, 595, 67876, 923329. Since we'll be computing the sum of squares of integers, we need an upper limit for the integers, which will be the square root of our limit: 10 thousand. 10 thousand squared will be exactly the limit, so we will go upto 10 thousand in our integer ranges. We're not counting 1 because the problem states that we're only concerned with the squares of positive integers.</p>
+<p>So we'll go with <strong>i = 1..9,999</strong> and create a new variable for summing up the squares of consecutive integers. This new variable will start with the value <strong>i**2</strong>. Then, we make another loop inside this loop, going with <strong>j = i+1..9,999</strong>. We start with <strong>i+1</strong> for <strong>j</strong> so that we start with the square of the next consecutive integer. Then we can add <strong>j**2</strong> to our temporary sum. There <em>is</em> still a possibility that we will go over the limit with our temporary sum, like with:</p>
 <div class="math">$$
- \begin{pmatrix}
-  1 &amp; 1 \\
-  1 &amp; 0 \\
- \end{pmatrix}^{n}
-=
- \begin{pmatrix}
-  F_{n+1} &amp; F_{n} \\
-  F_{n}   &amp; F_{n-1} \\
- \end{pmatrix}
+9,999^2 + 9,998^2 = 199940005
 $$</div>
-<p>I realized that I could use numpy to represent the first matrix, and I could use a loop up to a number <em>n</em>, continuously multiplying a resultant matrix with the first matrix above. This is one way to get a O(<em>n</em>) algorithm.</p>
-<p>Here's the code for a linear fibonacci function. I know numpy has a matrix_power() method, but that method is optimized for calculation and doesn't help to demonstrate the linear runtime of the code below.
-<script src="https://gist.github.com/yashaslokesh/604c6343478eea17c5171b386d186008.js"></script></p>
-<p>Now to make the O(log <em>n</em>) algorithm. These types of algorithms are usually created by splitting the input in half many times. I chose an arbitrary <em>n</em>=10. The exponent rule of  </p>
-<div class="math">$$ a^n * a^m = a^{n + m} (1) $$</div>
-<p>
-still applies for matrices. Along this line of logic, if we want to compute the fibonacci matrix for <em>n</em>=10, we can multiply two fibonacci matrices of power <em>n</em>=5. That is, </p>
-<div class="math">$$ A^5 * A^5 = A^{10} $$</div>
-<p>and the second and third entries of the resultant matrix will be our desired fibonacci numbers for <em>n</em>=10. Now we have to figure out a way to find the fibonacci matrix for <em>n</em>=5. Five isn't divisible by two, so we'll have to use a slightly different method. We know</p>
-<div class="math">$$ A^2 * A^2 = A^{4} $$</div>
-<p>If we multiply the resultant matrix by our base matrix, then</p>
-<div class="math">$$ A^4 * A^1 = A^5 $$</div>
-<p>We get the desired matrix! So we now have another rule: if the desired matrix has an odd power, we have to multiply two matrices with floor(n / 2) and then multiply once more by the base matrix.</p>
-<p>Now we have to figure out a way to start from the base matrix and go up to our desired matrix. Recursion seemed like the best way forward, but I think writing functions iteratively is easier to read, so I'll do it iteratively.</p>
-<script src="https://gist.github.com/yashaslokesh/9eba45c889d61391912fcbd435c805b0.js"></script>
+<p>An extreme example, but it illustrates the need for an extra limit-check. Let's add in a check for if our temporary sum is greater than the limit; if it is, we'll exit the inner loop and continue with a new start integer for our temporary sum.</p>
+<p>Here's what our code looks like so far:
+<script src="https://gist.github.com/yashaslokesh/73a32aed50c87bda7d739e9284467056.js"></script></p>
+<p>Okay, now we'll be generating all numbers which are sums of squares of consecutive integers. This is where we check if the number is a palindrome! Python makes this extremely easy with their slice objects syntax. Any <strong>str</strong> type in Python is an iterable, so we can use the syntax <strong>iterable[start:stop:step]</strong> to reverse a string: <strong>string[::-1]</strong>. We omit the start and stop, so the whole string is included, and then we use <strong>-1</strong> as the step size, which will reverse the string, then, we can check if the number is a palindrome by first converting it to a string, and then comparing this string to its reversed version. If they equal, then we have a palindrome.</p>
+<p>If the candidate number is indeed a palindrome, then we have to add it to the overall sum we're trying to find. Recall: the sum of palindromic numbers which, in turn, can be written as the sum of squares of consecutive integers. So let's make a <strong>result_sum = 0</strong> that we'll add to if a number is a palindrome.</p>
+<p>Here's the updated code:
+<script src="https://gist.github.com/yashaslokesh/4ed6d1e48b6143d19f26c9cd96ca59c8.js"></script></p>
+<p>The last if-statement is ugly, so we'll turn it into a function to make our code cleaner and easier to read:
+<script src="https://gist.github.com/yashaslokesh/a8fe484a57bab4d18db150f7f68f0dc7.js"></script></p>
+<p>There's still one case we haven't considered: what if two different sums turn out to be the same? This has an easy fix, let's keep track of every number. We could use a list or a set.</p>
+<p>In the case of a list, we add the temporary sum to the result sum if and only if the temporary sum is not in the list and the temporary sum is a palindrome. Otherwise, we can just continue the inner loop without any special case handling. If we want to use a set, we know that a set contains only unique elements. With a set, we know that the sum of all the elements in the final set will be the answer we're looking for, so we wouldn't need a result sum in this case. I've included both cases below:</p>
+<script src="https://gist.github.com/yashaslokesh/be8bd509220b9b7fbe7d66dc5fa47a6d.js"></script>
 
-<p>In this script, we put 10 into a list. The base case will be where <em>n</em>=1, so we loop and add floor(n / 2) to the list as long as we haven't added one to the end of the list. Here are some examples of what the stack would look like when we finish:</p>
-<script src="https://gist.github.com/yashaslokesh/64b97014d59161ce71ecbfb6506852dd.js"></script>
-
-<p>Now we create a matrix <em>result</em>. We know all the possible stacks will have a 1 in its last element, so we can just remove it from the stack without losing any information. Now we can process the numbers in the stack. While the stack is not empty, we multiply <em>result</em> by itself. If the number we popped from the stack is odd, then we multiply <em>result</em> by the base matrix. </p>
-<p>Here's the code for this part:</p>
-<script src="https://gist.github.com/yashaslokesh/7d32c618c0956e42264334d8ae3231e0.js"></script>
-
-<p>I wanted to test to see if I implemented these algorithms correctly, so I created another module to time these functions. We can use the <strong>timeit</strong> module to time small code snippets. By default, <strong>timeit</strong> will run the code snippet one million times.</p>
-<p>Here's the code for the timing part:</p>
-<script src="https://gist.github.com/yashaslokesh/d079ed48dce402a43c7f75c289d93678.js"></script>
-
-<p>The code snippet inside <strong>timeit.timeit()</strong> has to be self-contained. It cannot use any external variables. We can, however, pass in a string containing commands that will setup the environment for the code snippet to work. We can use the <strong>make_setup_string()</strong> function for this purpose.</p>
-<p>My final results, as I also posted on Twitter, are shown here:</p>
-<p><img alt="Image of the timing results, you can look on Twitter if you can't view it here using the link above." src="/images/lower-res-timings.png"></p>
-<p>The timing for the linear_fibonacci() function increases by about 28 seconds every increase of 15 to the input, so we accomplished a linear, or O(<em>n</em>) algorithm.</p>
-<p>The timing for the log_fibonacci() function does not follow this same trend. For <em>n</em>=60 and <em>n</em>=90, the timings are lower than the next lower value of <em>n</em>. Even with the input size increasing linearly, there is not a large change in the timing, so we implemented a correct O(log <em>n</em>) algorithm for finding fibonacci numbers.</p>
-<p>Thanks for reading! Follow me on Twitter or look at some of my other work on GitHub by clicking on the social links below.</p>
+<p>Running either function gives the correct answer, as verified by Project Euler: <strong>2906969179</strong>.</p>
+<p>Thanks for reading! If you have any comments, questions, or suggestions for improvement, feel free to reach out to me on <a href="https://twitter.com/yashaslokesh_">Twitter</a> or on <a href="https://github.com/yashaslokesh">GitHub</a>.</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
@@ -139,6 +111,38 @@ still applies for matrices. Along this line of logic, if we want to compute the 
 }
 </script>                </article>
             </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/optimizing-fibonacci-computation.html" rel="bookmark"
+                           title="Permalink to Optimizing Fibonacci Computation">Optimizing Fibonacci Computation</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-12-28T08:46:00-05:00">
+                Published: Fri 28 December 2018
+        </abbr>
+		<br />
+        <abbr class="modified" title="2018-12-28T08:46:00-05:00">
+                Updated: Fri 28 December 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info -->                <p>We go over my linear-algebra inspired algorithms to compute Fibonacci numbers</p>
+                <a class="readmore" href="/optimizing-fibonacci-computation.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
@@ -152,7 +156,6 @@ still applies for matrices. Along this line of logic, if we want to compute the 
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://twitter.com/yashaslokesh_">My Twitter</a></li>
                             <li><a href="https://www.linkedin.com/in/yashaslokesh/">My LinkedIn</a></li>
@@ -169,14 +172,5 @@ still applies for matrices. Along this line of logic, if we want to compute the 
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
-    <script type="text/javascript">
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-123139556-3', 'auto');
-    ga('send', 'pageview');
-    </script>
 </body>
 </html>

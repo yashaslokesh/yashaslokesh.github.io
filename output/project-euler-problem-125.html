@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Yashas's Blog - Yashas Lokesh</title>
+        <title>Project Euler Problem #125</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
@@ -11,13 +11,18 @@
                 <h1><a href="/">Yashas's Blog </a></h1>
                 <nav><ul>
                     <li><a href="/category/misc.html">misc</a></li>
-                    <li><a href="/category/python.html">Python</a></li>
+                    <li class="active"><a href="/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/project-euler-problem-125.html" rel="bookmark"
+           title="Permalink to Project Euler Problem #125">Project Euler Problem #125</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/project-euler-problem-125.html">Project Euler Problem #125</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2018-12-31T11:58:00-05:00">
                 Published: Mon 31 December 2018
@@ -32,7 +37,7 @@
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 <p>tags: <a href="/tag/python.html">python</a> <a href="/tag/math.html">math</a> </p>
-</footer><!-- /.post-info --><p>Here's the <a href="https://projecteuler.net/problem=125">problem link</a>.</p>
+</footer><!-- /.post-info -->      <p>Here's the <a href="https://projecteuler.net/problem=125">problem link</a>.</p>
 <p>If you haven't attempted solving this problem, yet, go try it first!!</p>
 <p>The problem wants us to find the sum of all palindromic numbers which can be written as the sum of consecutive squares of integers, under 10 million. This range is small enough that we don't have to do any optimizations, so I brute-forced the search.</p>
 <p>A palindromic number is such that when its reversed, it's still the same number. Some examples: 1, 121, 595, 67876, 923329. Since we'll be computing the sum of squares of integers, we need an upper limit for the integers, which will be the square root of our limit: 10 thousand. 10 thousand squared will be exactly the limit, so we will go upto 10 thousand in our integer ranges. We're not counting 1 because the problem states that we're only concerned with the squares of positive integers.</p>
@@ -109,66 +114,11 @@ $$</div>
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-</script>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</script>
+    </div><!-- /.entry-content -->
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/optimizing-fibonacci-computation.html" rel="bookmark"
-                           title="Permalink to Optimizing Fibonacci Computation">Optimizing Fibonacci Computation</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-12-28T08:46:00-05:00">
-                Published: Fri 28 December 2018
-        </abbr>
-		<br />
-        <abbr class="modified" title="2018-12-28T08:46:00-05:00">
-                Updated: Fri 28 December 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="/category/python.html">Python</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/algorithms.html">algorithms</a> </p>
-</footer><!-- /.post-info -->                <p>We go over my linear-algebra inspired algorithms to compute Fibonacci numbers</p>
-                <a class="readmore" href="/optimizing-fibonacci-computation.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/My-first-post.html" rel="bookmark"
-                           title="Permalink to My first post">My first post</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-12-28T02:46:00-05:00">
-                Published: Fri 28 December 2018
-        </abbr>
-		<br />
-        <abbr class="modified" title="2018-12-28T02:46:00-05:00">
-                Updated: Fri 28 December 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="/category/misc.html">misc</a>.</p>
-<p>tags: <a href="/tag/first.html">first</a> <a href="/tag/misc.html">misc</a> </p>
-</footer><!-- /.post-info -->                <p>My first post!</p>
-                <a class="readmore" href="/My-first-post.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
