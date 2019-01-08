@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Yashas's Blog - python</title>
+        <title>Generator Expressions and List Comprehensions</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
         <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
 </head>
@@ -12,13 +12,18 @@
                 <h1><a href="/">Yashas's Blog </a></h1>
                 <nav><ul>
                     <li><a href="/category/misc.html">misc</a></li>
-                    <li><a href="/category/python.html">Python</a></li>
+                    <li class="active"><a href="/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/generator-expressions-and-list-comprehensions.html" rel="bookmark"
+           title="Permalink to Generator Expressions and List Comprehensions">Generator Expressions and List Comprehensions</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/generator-expressions-and-list-comprehensions.html">Generator Expressions and List Comprehensions</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-01-08T08:46:00-05:00">
                 Published: Tue 08 January 2019
@@ -33,7 +38,7 @@
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 <p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info --><p>Generator expressions and list comprehensions are functional programming tools that are very useful in creating iterators and lists, respectively.</p>
+</footer><!-- /.post-info -->      <p>Generator expressions and list comprehensions are functional programming tools that are very useful in creating iterators and lists, respectively.</p>
 <p>If we want to create a list, we can just use the square bracket notation or the <strong>list()</strong> constructor. Lists can store any data values. If we want to create a list of the squares of numbers below 10, we can just add to the list:</p>
 <div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;This is a list element&#39;</span><span class="p">,</span> <span class="s1">&#39;and so is this one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;inner list!&#39;</span><span class="p">]]</span>
 <span class="o">&gt;&gt;&gt;</span>
@@ -122,66 +127,11 @@
 
 
 <p>It can be memory-expensive to create a large list, and if you're only using the list for its side-effects, then the list is thrown away after you create it and you potentially lost a lot of performance speed creating the intermediate list.</p>
-<p>Thanks for reading! If you have any comments, questions, or suggestions for improvement, feel free to contact me on <a href="https://twitter.com/yashaslokesh_">Twitter</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>Thanks for reading! If you have any comments, questions, or suggestions for improvement, feel free to contact me on <a href="https://twitter.com/yashaslokesh_">Twitter</a>.</p>
+    </div><!-- /.entry-content -->
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/project-euler-problem-125.html" rel="bookmark"
-                           title="Permalink to Project Euler Problem #125">Project Euler Problem #125</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-12-31T11:58:00-05:00">
-                Published: Mon 31 December 2018
-        </abbr>
-		<br />
-        <abbr class="modified" title="2018-12-31T11:58:00-05:00">
-                Updated: Mon 31 December 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="/category/python.html">Python</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/math.html">math</a> </p>
-</footer><!-- /.post-info -->                <p>Solving <a href="https://projecteuler.net/problem=125">Project Euler's problem #125</a></p>
-                <a class="readmore" href="/project-euler-problem-125.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/optimizing-fibonacci-computation.html" rel="bookmark"
-                           title="Permalink to Optimizing Fibonacci Computation">Optimizing Fibonacci Computation</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2018-12-28T08:46:00-05:00">
-                Published: Fri 28 December 2018
-        </abbr>
-		<br />
-        <abbr class="modified" title="2018-12-28T08:46:00-05:00">
-                Updated: Fri 28 December 2018
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="/category/python.html">Python</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/algorithms.html">algorithms</a> </p>
-</footer><!-- /.post-info -->                <p>We go over my linear-algebra inspired algorithms to compute Fibonacci numbers</p>
-                <a class="readmore" href="/optimizing-fibonacci-computation.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
