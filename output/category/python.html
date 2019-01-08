@@ -17,7 +17,124 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/project-euler-problem-125.html">Project Euler Problem #125</a></h1>
+                    <h1 class="entry-title"><a href="/generator-expressions-and-list-comprehensions.html">Generator Expressions and List Comprehensions</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2019-01-08T08:46:00-05:00">
+                Published: Tue 08 January 2019
+        </abbr>
+		<br />
+        <abbr class="modified" title="2019-01-08T08:46:00-05:00">
+                Updated: Tue 08 January 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info --><p>Generator expressions and list comprehensions are functional programming tools that are very useful in creating iterators and lists, respectively.</p>
+<p>If we want to create a list, we can just use the square bracket notation or the <strong>list()</strong> constructor. Lists can store any data values. If we want to create a list of the squares of numbers below 10, we can just add to the list:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;This is a list element&#39;</span><span class="p">,</span> <span class="s1">&#39;and so is this one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;inner list!&#39;</span><span class="p">]]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">squares</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">81</span><span class="p">]</span>
+</pre></div>
+
+
+<p>List comprehensions provide a more readable way to create lists. We can use it to create a list of the first 10 numbers, only even numbers, or only include numbers that satisfy some other requirement. Here's a way to create a list of all numbers under 20, and then all numbers below 20:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">evens_under_twenty</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">evens_under_twenty</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Here we see two basic syntax structures for creating list comprehensions. We can use <strong>i for i in iterable</strong>, where <strong>iterable</strong> is a generator, list, string, or some other iterable. You can check if an object is iterable by checking for the <strong><strong>iter</strong>()</strong> magic method, and these are two ways to do it:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;__iter__&#39;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">range</span><span class="p">)</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">range</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">)</span>
+<span class="bp">True</span>
+</pre></div>
+
+
+<p>You can also make list comprehensions with the <strong>if...else</strong> pattern as many times as needed:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">bool_evens</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">False</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bool_evens</span>
+<span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divide_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;div by 2&#39;</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;div by 3&#39;</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">divide_list</span>
+<span class="p">[</span><span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 3&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 3&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Generator expressions are created the same way as list comprehensions but with parentheses around the expression instead of square brackets. To get all of the elements in the generator, you can iterate over it. When you want to create a list to iterate over, generator expressions can be used instead for an increase in performance. The increase in performance comes from not storing all of the elements in the iterable beforehand. The generator expression supplies elements as the iterator asks for them.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">evens_gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">evens_gen</span>
+<span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="o">&lt;</span><span class="n">genexpr</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x103daf5e8</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">evens_gen</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">sum</span> <span class="o">+=</span> <span class="n">num</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span>
+<span class="mi">90</span>
+</pre></div>
+
+
+<p>If you want to create dictionaries or sets using these expressions, you can! Here are some examples:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span>
+<span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span>
+<span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num_dict</span>
+<span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">&#39;7&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">&#39;9&#39;</span><span class="p">}</span>
+</pre></div>
+
+
+<p>The difference between set and dictionary comprehensions is that dictionary comprehensions have a <strong>key:value</strong> pair as the element you're inserting into the dictionary. Both set and dictionary comprehensions use curly braces instead of square brackets or parentheses.</p>
+<p>Make sure not to use these expressions for a side-effect. These expressions should be used to create iterables. If you wanted to print out all even numbers below 10, you should use a for loop instead of a generator or a list:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Use this:</span>
+<span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+
+<span class="c1"># Instead of this:</span>
+<span class="p">[</span><span class="k">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<p>It can be memory-expensive to create a large list, and if you're only using the list for its side-effects, then the list is thrown away after you create it and you potentially lost a lot of performance speed creating the intermediate list.</p>
+<p>Thanks for reading! If you have any comments, questions, or suggestions for improvement, feel free to contact me on <a href="https://twitter.com/yashaslokesh_">Twitter</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/project-euler-problem-125.html" rel="bookmark"
+                           title="Permalink to Project Euler Problem #125">Project Euler Problem #125</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2018-12-31T11:58:00-05:00">
                 Published: Mon 31 December 2018
@@ -32,89 +149,10 @@
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 <p>tags: <a href="/tag/python.html">python</a> <a href="/tag/math.html">math</a> </p>
-</footer><!-- /.post-info --><p>Here's the <a href="https://projecteuler.net/problem=125">problem link</a>.</p>
-<p>If you haven't attempted solving this problem, yet, go try it first!!</p>
-<p>The problem wants us to find the sum of all palindromic numbers which can be written as the sum of consecutive squares of integers, under 10 million. This range is small enough that we don't have to do any optimizations, so I brute-forced the search.</p>
-<p>A palindromic number is such that when its reversed, it's still the same number. Some examples: 1, 121, 595, 67876, 923329. Since we'll be computing the sum of squares of integers, we need an upper limit for the integers, which will be the square root of our limit: 10 thousand. 10 thousand squared will be exactly the limit, so we will go upto 10 thousand in our integer ranges. We're not counting 1 because the problem states that we're only concerned with the squares of positive integers.</p>
-<p>So we'll go with <strong>i = 1..9,999</strong> and create a new variable for summing up the squares of consecutive integers. This new variable will start with the value <strong>i**2</strong>. Then, we make another loop inside this loop, going with <strong>j = i+1..9,999</strong>. We start with <strong>i+1</strong> for <strong>j</strong> so that we start with the square of the next consecutive integer. Then we can add <strong>j**2</strong> to our temporary sum. There <em>is</em> still a possibility that we will go over the limit with our temporary sum, like with:</p>
-<div class="math">$$
-9,999^2 + 9,998^2 = 199940005
-$$</div>
-<p>An extreme example, but it illustrates the need for an extra limit-check. Let's add in a check for if our temporary sum is greater than the limit; if it is, we'll exit the inner loop and continue with a new start integer for our temporary sum.</p>
-<p>Here's what our code looks like so far:
-<script src="https://gist.github.com/yashaslokesh/73a32aed50c87bda7d739e9284467056.js"></script></p>
-<p>Okay, now we'll be generating all numbers which are sums of squares of consecutive integers. This is where we check if the number is a palindrome! Python makes this extremely easy with their slice objects syntax. Any <strong>str</strong> type in Python is an iterable, so we can use the syntax <strong>iterable[start:stop:step]</strong> to reverse a string: <strong>string[::-1]</strong>. We omit the start and stop, so the whole string is included, and then we use <strong>-1</strong> as the step size, which will reverse the string, then, we can check if the number is a palindrome by first converting it to a string, and then comparing this string to its reversed version. If they equal, then we have a palindrome.</p>
-<p>If the candidate number is indeed a palindrome, then we have to add it to the overall sum we're trying to find. Recall: the sum of palindromic numbers which, in turn, can be written as the sum of squares of consecutive integers. So let's make a <strong>result_sum = 0</strong> that we'll add to if a number is a palindrome.</p>
-<p>Here's the updated code:
-<script src="https://gist.github.com/yashaslokesh/4ed6d1e48b6143d19f26c9cd96ca59c8.js"></script></p>
-<p>The last if-statement is ugly, so we'll turn it into a function to make our code cleaner and easier to read:
-<script src="https://gist.github.com/yashaslokesh/a8fe484a57bab4d18db150f7f68f0dc7.js"></script></p>
-<p>There's still one case we haven't considered: what if two different sums turn out to be the same? This has an easy fix, let's keep track of every number. We could use a list or a set.</p>
-<p>In the case of a list, we add the temporary sum to the result sum if and only if the temporary sum is not in the list and the temporary sum is a palindrome. Otherwise, we can just continue the inner loop without any special case handling. If we want to use a set, we know that a set contains only unique elements. With a set, we know that the sum of all the elements in the final set will be the answer we're looking for, so we wouldn't need a result sum in this case. I've included both cases below:</p>
-<script src="https://gist.github.com/yashaslokesh/be8bd509220b9b7fbe7d66dc5fa47a6d.js"></script>
-
-<p>Running either function gives the correct answer, as verified by Project Euler: <strong>2906969179</strong>.</p>
-<p>Thanks for reading! If you have any comments, questions, or suggestions for improvement, feel free to reach out to me on <a href="https://twitter.com/yashaslokesh_">Twitter</a> or on <a href="https://github.com/yashaslokesh">GitHub</a>.</p>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>Solving <a href="https://projecteuler.net/problem=125">Project Euler's problem #125</a></p>
+                <a class="readmore" href="/project-euler-problem-125.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

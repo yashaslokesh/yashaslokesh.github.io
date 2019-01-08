@@ -1,5 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Yashas's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2018-12-28T08:46:00-05:00</updated><entry><title>Optimizing Fibonacci Computation</title><link href="/optimizing-fibonacci-computation.html" rel="alternate"></link><published>2018-12-28T08:46:00-05:00</published><updated>2018-12-28T08:46:00-05:00</updated><author><name>Yashas Lokesh</name></author><id>tag:None,2018-12-28:/optimizing-fibonacci-computation.html</id><summary type="html">&lt;p&gt;We go over my linear-algebra inspired algorithms to compute Fibonacci numbers&lt;/p&gt;</summary><content type="html">&lt;p&gt;I posted about this on &lt;a href="https://twitter.com/yashaslokesh_/status/1078510658633846785"&gt;Twitter&lt;/a&gt; yesterday.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Yashas's Blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2018-12-31T11:58:00-05:00</updated><entry><title>Project Euler Problem #125</title><link href="/project-euler-problem-125.html" rel="alternate"></link><published>2018-12-31T11:58:00-05:00</published><updated>2018-12-31T11:58:00-05:00</updated><author><name>Yashas Lokesh</name></author><id>tag:None,2018-12-31:/project-euler-problem-125.html</id><summary type="html">&lt;p&gt;Solving &lt;a href="https://projecteuler.net/problem=125"&gt;Project Euler's problem #125&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;Here's the &lt;a href="https://projecteuler.net/problem=125"&gt;problem link&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you haven't attempted solving this problem, yet, go try it first!!&lt;/p&gt;
+&lt;p&gt;The problem wants us to find the sum of all palindromic numbers which can be written as the sum of consecutive squares of integers, under 10 million. This range is small enough that we don't have to do any optimizations, so I brute-forced the search.&lt;/p&gt;
+&lt;p&gt;A palindromic number is such that when its reversed, it's still the same number. Some examples: 1, 121, 595, 67876, 923329. Since we'll be computing the sum of squares of integers, we need an upper limit for the integers, which will be the square root of our limit: 10 thousand. 10 thousand squared will be exactly the limit, so we will go upto 10 thousand in our integer ranges. We're not counting 1 because the problem states that we're only concerned with the squares of positive integers.&lt;/p&gt;
+&lt;p&gt;So we'll go with &lt;strong&gt;i = 1..9,999&lt;/strong&gt; and create a new variable for summing up the squares of consecutive integers. This new variable will start with the value &lt;strong&gt;i**2&lt;/strong&gt;. Then, we make another loop inside this loop, going with &lt;strong&gt;j = i+1..9,999&lt;/strong&gt;. We start with &lt;strong&gt;i+1&lt;/strong&gt; for &lt;strong&gt;j&lt;/strong&gt; so that we start with the square of the next consecutive integer. Then we can add &lt;strong&gt;j**2&lt;/strong&gt; to our temporary sum. There &lt;em&gt;is&lt;/em&gt; still a possibility that we will go over the limit with our temporary sum, like with:&lt;/p&gt;
+&lt;div class="math"&gt;$$
+9,999^2 + 9,998^2 = 199940005
+$$&lt;/div&gt;
+&lt;p&gt;An extreme example, but it illustrates the need for an extra limit-check. Let's add in a check for if our temporary sum is greater than the limit; if it is, we'll exit the inner loop and continue with a new start integer for our temporary sum.&lt;/p&gt;
+&lt;p&gt;Here's what our code looks like so far:
+&lt;script src="https://gist.github.com/yashaslokesh/73a32aed50c87bda7d739e9284467056.js"&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;Okay, now we'll be generating all numbers which are sums of squares of consecutive integers. This is where we check if the number is a palindrome! Python makes this extremely easy with their slice objects syntax. Any &lt;strong&gt;str&lt;/strong&gt; type in Python is an iterable, so we can use the syntax &lt;strong&gt;iterable[start:stop:step]&lt;/strong&gt; to reverse a string: &lt;strong&gt;string[::-1]&lt;/strong&gt;. We omit the start and stop, so the whole string is included, and then we use &lt;strong&gt;-1&lt;/strong&gt; as the step size, which will reverse the string, then, we can check if the number is a palindrome by first converting it to a string, and then comparing this string to its reversed version. If they equal, then we have a palindrome.&lt;/p&gt;
+&lt;p&gt;If the candidate number is indeed a palindrome, then we have to add it to the overall sum we're trying to find. Recall: the sum of palindromic numbers which, in turn, can be written as the sum of squares of consecutive integers. So let's make a &lt;strong&gt;result_sum = 0&lt;/strong&gt; that we'll add to if a number is a palindrome.&lt;/p&gt;
+&lt;p&gt;Here's the updated code:
+&lt;script src="https://gist.github.com/yashaslokesh/4ed6d1e48b6143d19f26c9cd96ca59c8.js"&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;The last if-statement is ugly, so we'll turn it into a function to make our code cleaner and easier to read:
+&lt;script src="https://gist.github.com/yashaslokesh/a8fe484a57bab4d18db150f7f68f0dc7.js"&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;There's still one case we haven't considered: what if two different sums turn out to be the same? This has an easy fix, let's keep track of every number. We could use a list or a set.&lt;/p&gt;
+&lt;p&gt;In the case of a list, we add the temporary sum to the result sum if and only if the temporary sum is not in the list and the temporary sum is a palindrome. Otherwise, we can just continue the inner loop without any special case handling. If we want to use a set, we know that a set contains only unique elements. With a set, we know that the sum of all the elements in the final set will be the answer we're looking for, so we wouldn't need a result sum in this case. I've included both cases below:&lt;/p&gt;
+&lt;script src="https://gist.github.com/yashaslokesh/be8bd509220b9b7fbe7d66dc5fa47a6d.js"&gt;&lt;/script&gt;
+
+&lt;p&gt;Running either function gives the correct answer, as verified by Project Euler: &lt;strong&gt;2906969179&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Thanks for reading! If you have any comments, questions, or suggestions for improvement, feel free to reach out to me on &lt;a href="https://twitter.com/yashaslokesh_"&gt;Twitter&lt;/a&gt; or on &lt;a href="https://github.com/yashaslokesh"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="python"></category><category term="math"></category></entry><entry><title>Optimizing Fibonacci Computation</title><link href="/optimizing-fibonacci-computation.html" rel="alternate"></link><published>2018-12-28T08:46:00-05:00</published><updated>2018-12-28T08:46:00-05:00</updated><author><name>Yashas Lokesh</name></author><id>tag:None,2018-12-28:/optimizing-fibonacci-computation.html</id><summary type="html">&lt;p&gt;We go over my linear-algebra inspired algorithms to compute Fibonacci numbers&lt;/p&gt;</summary><content type="html">&lt;p&gt;I posted about this on &lt;a href="https://twitter.com/yashaslokesh_/status/1078510658633846785"&gt;Twitter&lt;/a&gt; yesterday.&lt;/p&gt;
 &lt;p&gt;I've been attempting to study the topic of algorithms this break because one of my classes next semester will cover exactly that. I came upon an MIT series of lectures for a class named "Introduction to Algorithms", and I reached &lt;a href="https://youtu.be/OQ5jsbhAv_M"&gt;this video&lt;/a&gt; yesterday on dynamic programming.&lt;/p&gt;
 &lt;p&gt;The professor says that there is a O(log &lt;em&gt;n&lt;/em&gt;) algorithm for computing fibonacci numbers, and I'm instantly intrigued. I assumed that O(&lt;em&gt;n&lt;/em&gt;) was the best that could be accomplished because all of the fibonacci functions we used in our classes were written that way.&lt;/p&gt;
 &lt;p&gt;I went to &lt;a href="https://en.wikipedia.org/wiki/Fibonacci_number#Matrix_form"&gt;this Wikipedia article&lt;/a&gt; and started reading.
