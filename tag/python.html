@@ -18,7 +18,78 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/generator-expressions-and-list-comprehensions.html">Generator Expressions and List Comprehensions</a></h1>
+                    <h1 class="entry-title"><a href="/inverting-the-colors-of-an-image.html">Inverting the colors of an image</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2019-01-24T20:46:00-05:00">
+                Published: Thu 24 January 2019
+        </abbr>
+		<br />
+        <abbr class="modified" title="2019-01-24T20:46:00-05:00">
+                Updated: Thu 24 January 2019
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
+        </address>
+<p>In <a href="/category/python.html">Python</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/numpy.html">numpy</a> <a href="/tag/pillow.html">pillow</a> </p>
+</footer><!-- /.post-info --><p>If you ever design a logo or a sprite for a dark background, and are told the logo/sprite will be used on a light background, what do you do? You've spent all this time working on the design, and it might not even fit the theme anymore! </p>
+<p>I faced this problem this last week when I wanted to use a sprite I designed for a black background for a white background instead. With the use of <strong>Numpy</strong> and <strong>Pillow</strong>, I was able to quickly invert the colors in an image with PNG or JPEG formats. Others formats are untested, so far.</p>
+<p>Using Pillow, we can open an image by using the <code>PIL.Image.open()</code> method. The type of the returned object will depend on the image format passed in, but all of them support an array interface, so we can safely continue. Then, to be able to manipulate all the pixel values in our image, we use the <code>numpy.array()</code> function and pass in the opened image.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">image_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">image_arr</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="s1">&#39;&gt;</span>
+</pre></div>
+
+
+<p>The image array we get will have three channels corresponding to the (R, G, B) values of a pixel with one extra channel if the image format includes an alpha layer. How can we check if we have a PNG or JPEG image? We can use <code>image_arr.shape</code>. The returned 3-tuple will have the number of channels in the third slot.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;circle.png&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">image_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">image_arr</span><span class="o">.</span><span class="n">shape</span>
+<span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Now we have a usable array and we can invert the colors. Mathematically, to invert the color of one pixel, we subtract the pixel's color values from the maximum, 255. If we have a PNG format image, then we have an extra alpha channel that we don't want to modify, or the transparent parts of the image won't be transparent anymore. We can use numpy slice notation to modify all dimensions of the array.</p>
+<p>If the number of channels is four, we'll just add the unaltered alpha channel on top of the inverted colors array and create an <code>Image</code> with it. An <code>Image</code> can be created with the <code>Image.fromarray()</code> method.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">colors_arr</span> <span class="o">=</span> <span class="n">image_arr</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">invert_col_arr</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">colors_arr</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">is_png</span> <span class="o">=</span> <span class="n">image_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span>
+</pre></div>
+
+
+<p>One last thing: If we extract the alpha channel, the returned array has a size <code>(99, 99)</code>. If we want to stack the alpha channel on top of our inverted colors array, then we have to use the <code>numpy.dstack</code> function. With all this down, we can finish inverting our image:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">is_png</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">alpha_ch</span> <span class="o">=</span> <span class="n">image_arr</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="o">...</span>     <span class="n">inverted_arr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="n">colors_arr</span><span class="p">,</span> <span class="n">alpha_ch</span><span class="p">))</span>
+<span class="o">...</span> <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">inverted_arr</span> <span class="o">=</span> <span class="n">colors_arr</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">inverted_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">inverted_arr</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p>I ran this code on a PNG image to test, turned this (there's a white circle in the middle there) <img alt="original circle" src="images/shooter.png" title="Circle Shooter"> into this <img alt="inverted circle" src="images/shooter-inv.png" title="Inverted Circle Shooter">. </p>
+<p>Thanks for reading, I hope you learned how to use <code>Pillow</code> and <code>Numpy</code> to invert image colors without any external software. If you have any comments, questions, or suggestions, feel free to contact me on <a href="https://twitter.com/yashaslokesh_">Twitter</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/generator-expressions-and-list-comprehensions.html" rel="bookmark"
+                           title="Permalink to Generator Expressions and List Comprehensions">Generator Expressions and List Comprehensions</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-01-08T08:46:00-05:00">
                 Published: Tue 08 January 2019
@@ -33,101 +104,10 @@
         </address>
 <p>In <a href="/category/python.html">Python</a>.</p>
 <p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info --><p>Generator expressions and list comprehensions are functional programming tools that are very useful in creating iterators and lists, respectively.</p>
-<p>If we want to create a list, we can just use the square bracket notation or the <strong>list()</strong> constructor. Lists can store any data values. If we want to create a list of the squares of numbers below 10, we can just add to the list:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;This is a list element&#39;</span><span class="p">,</span> <span class="s1">&#39;and so is this one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;inner list!&#39;</span><span class="p">]]</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-<span class="o">...</span>     <span class="n">squares</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-<span class="o">...</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">81</span><span class="p">]</span>
-</pre></div>
-
-
-<p>List comprehensions provide a more readable way to create lists. We can use it to create a list of the first 10 numbers, only even numbers, or only include numbers that satisfy some other requirement. Here's a way to create a list of all numbers under 20, and then all numbers below 20:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">evens_under_twenty</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">evens_under_twenty</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
-</pre></div>
-
-
-<p>Here we see two basic syntax structures for creating list comprehensions. We can use <strong>i for i in iterable</strong>, where <strong>iterable</strong> is a generator, list, string, or some other iterable. You can check if an object is iterable by checking for the <strong><strong>iter</strong>()</strong> magic method, and these are two ways to do it:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;__iter__&#39;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">range</span><span class="p">)</span>
-<span class="bp">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">range</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">)</span>
-<span class="bp">True</span>
-</pre></div>
-
-
-<p>You can also make list comprehensions with the <strong>if...else</strong> pattern as many times as needed:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">bool_evens</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">False</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">bool_evens</span>
-<span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">divide_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;div by 2&#39;</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;div by 3&#39;</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">divide_list</span>
-<span class="p">[</span><span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 3&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 3&#39;</span><span class="p">]</span>
-</pre></div>
-
-
-<p>Generator expressions are created the same way as list comprehensions but with parentheses around the expression instead of square brackets. To get all of the elements in the generator, you can iterate over it. When you want to create a list to iterate over, generator expressions can be used instead for an increase in performance. The increase in performance comes from not storing all of the elements in the iterable beforehand. The generator expression supplies elements as the iterator asks for them.</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">evens_gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">evens_gen</span>
-<span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="o">&lt;</span><span class="n">genexpr</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x103daf5e8</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">evens_gen</span><span class="p">:</span>
-<span class="o">...</span>     <span class="nb">sum</span> <span class="o">+=</span> <span class="n">num</span>
-<span class="o">...</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span>
-<span class="mi">90</span>
-</pre></div>
-
-
-<p>If you want to create dictionaries or sets using these expressions, you can! Here are some examples:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span>
-<span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span>
-<span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">num_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">num_dict</span>
-<span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">&#39;7&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">&#39;9&#39;</span><span class="p">}</span>
-</pre></div>
-
-
-<p>The difference between set and dictionary comprehensions is that dictionary comprehensions have a <strong>key:value</strong> pair as the element you're inserting into the dictionary. Both set and dictionary comprehensions use curly braces instead of square brackets or parentheses.</p>
-<p>Make sure not to use these expressions for a side-effect. These expressions should be used to create iterables. If you wanted to print out all even numbers below 10, you should use a for loop instead of a generator or a list:</p>
-<div class="highlight"><pre><span></span><span class="c1"># Use this:</span>
-<span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
-
-<span class="c1"># Instead of this:</span>
-<span class="p">[</span><span class="k">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
-</pre></div>
-
-
-<p>It can be memory-expensive to create a large list, and if you're only using the list for its side-effects, then the list is thrown away after you create it and you potentially lost a lot of performance speed creating the intermediate list.</p>
-<p>Thanks for reading! If you have any comments, questions, or suggestions for improvement, feel free to contact me on <a href="https://twitter.com/yashaslokesh_">Twitter</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>We learn about generator expressions and list comprehensions, useful ways to create iterators and lists, respectively.</p>
+                <a class="readmore" href="/generator-expressions-and-list-comprehensions.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -189,7 +169,6 @@
                             <li><a href="http://getpelican.com/">Pelican</a></li>
                             <li><a href="http://python.org/">Python.org</a></li>
                             <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
