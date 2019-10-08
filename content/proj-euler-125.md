@@ -4,6 +4,7 @@ Modified: 2018-12-31 11:58
 Category: Python
 Tags: python, math
 Authors: Yashas Lokesh
+Status: published
 Summary: Solving [Project Euler's problem #125](https://projecteuler.net/problem=125)
 
 Here's the [problem link](https://projecteuler.net/problem=125).

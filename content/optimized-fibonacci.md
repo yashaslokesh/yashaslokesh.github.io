@@ -4,6 +4,7 @@ Modified: 2018-12-28 08:46
 Category: Python
 Tags: python, algorithms
 Authors: Yashas Lokesh
+Status: published
 Summary: We go over my linear-algebra inspired algorithms to compute Fibonacci numbers
 
 I posted about this on [Twitter](https://twitter.com/yashaslokesh_/status/1078510658633846785) yesterday.

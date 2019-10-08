@@ -5,6 +5,7 @@ Category: misc
 Tags: first, misc
 Slug: My-first-post
 Authors: Yashas Lokesh
+Status: published
 Summary: My first post!
 
 This is the *first post* from my Pelican blog. **YAY!**

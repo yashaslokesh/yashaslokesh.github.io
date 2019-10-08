@@ -4,6 +4,7 @@ Modified: 2019-01-24 20:46
 Category: Python
 Tags: python, numpy, pillow
 Authors: Yashas Lokesh
+Status: published
 Summary: A small tutorial on inverting the color of images with Python
 
 If you ever design a logo or a sprite for a dark background, and are told the logo/sprite will be used on a light background, what do you do? You've spent all this time working on the design, and it might not even fit the theme anymore! 

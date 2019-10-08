@@ -42,3 +42,7 @@ PLUGINS = ['render_math']
 ## Add static paths
 STATIC_PATHS = ['images', # Add images directory from inside content directory
                 ]
+
+DEFAULT_METADATA = {
+    'status': 'draft',
+}

@@ -4,6 +4,7 @@ Modified: 2019-01-08 08:46
 Category: Python
 Tags: python
 Authors: Yashas Lokesh
+Status: published
 Summary: We learn about generator expressions and list comprehensions, useful ways to create iterators and lists, respectively.
 
 Generator expressions and list comprehensions are functional programming tools that are very useful in creating iterators and lists, respectively.
