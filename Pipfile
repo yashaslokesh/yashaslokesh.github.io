@@ -8,6 +8,10 @@ verify_ssl = true
 [packages]
 pelican = "*"
 markdown = "*"
+ghp-import = "*"
+mypy = "*"
+black = "==19.3b0"
+jinja2 = "*"
 
 [requires]
 python_version = "3.7"
