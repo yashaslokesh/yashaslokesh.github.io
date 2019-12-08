@@ -13,9 +13,11 @@ push more updates concerning my activities as a college student and as a develop
 My hope is that, by writing about stuff I'm working on or thinking about here, 
 I'll be more motivated to pursue side activities. 
 
-As a CS & Math double major, student-initiated course facilitator, sometimes TA,
+As a CS & Math double major, student-initiated course facilitator,
 and debate team member, school and its extracurriculars take most of my time, 
 but I enjoy summer and winter breaks where I can sit down and work on software
 projects all the time. 
+
+Starting from November 2019, I've become a member of the [Bitcamp](https://bit.camp/) tech team.
 
 My current project is building some sort of adventurer game with Python & Pygame.
