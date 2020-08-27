@@ -16,10 +16,10 @@ The professor says that there is a O(log *n*) algorithm for computing fibonacci 
 I went to [this Wikipedia article](https://en.wikipedia.org/wiki/Fibonacci_number#Matrix_form) and started reading.
 In particular, they list this formula:
 $$
- \begin{pmatrix}
+** \begin{pmatrix}
   1 & 1 \\
   1 & 0 \\
- \end{pmatrix}^{n}
+ \end{pmatrix}**^{n}
 =
  \begin{pmatrix}
   F_{n+1} & F_{n} \\

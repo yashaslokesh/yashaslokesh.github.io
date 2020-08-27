@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
         <title>Generator Expressions and List Comprehensions</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
+        <meta name="description" content="We learn about generator expressions and list comprehensions, useful ways to create iterators and lists, respectively." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Yashas's Blog </a></h1>
+                <h1><a href="/">Yashas's Blog</a></h1>
                 <nav><ul>
                     <li><a href="/pages/about-me.html">About</a></li>
                     <li><a href="/category/misc.html">misc</a></li>
@@ -40,7 +42,7 @@
 <p>tags: <a href="/tag/python.html">python</a> </p>
 </footer><!-- /.post-info -->      <p>Generator expressions and list comprehensions are functional programming tools that are very useful in creating iterators and lists, respectively.</p>
 <p>If we want to create a list, we can just use the square bracket notation or the <strong>list()</strong> constructor. Lists can store any data values. If we want to create a list of the squares of numbers below 10, we can just add to the list:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;This is a list element&#39;</span><span class="p">,</span> <span class="s1">&#39;and so is this one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;inner list!&#39;</span><span class="p">]]</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;This is a list element&#39;</span><span class="p">,</span> <span class="s1">&#39;and so is this one&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;inner list!&#39;</span><span class="p">]]</span>
 <span class="o">&gt;&gt;&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
@@ -48,32 +50,32 @@
 <span class="o">...</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">squares</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">81</span><span class="p">]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>List comprehensions provide a more readable way to create lists. We can use it to create a list of the first 10 numbers, only even numbers, or only include numbers that satisfy some other requirement. Here's a way to create a list of all numbers under 20, and then all numbers below 20:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">evens_under_twenty</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">evens_under_twenty</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Here we see two basic syntax structures for creating list comprehensions. We can use <strong>i for i in iterable</strong>, where <strong>iterable</strong> is a generator, list, string, or some other iterable. You can check if an object is iterable by checking for the <strong><strong>iter</strong>()</strong> magic method, and these are two ways to do it:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;__iter__&#39;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">range</span><span class="p">)</span>
-<span class="bp">True</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;__iter__&#39;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">range</span><span class="p">)</span>
+<span class="kc">True</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">hasattr</span><span class="p">(</span><span class="nb">range</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">)</span>
-<span class="bp">True</span>
-</pre></div>
+<span class="kc">True</span>
+</code></pre></div>
 
 
 <p>You can also make list comprehensions with the <strong>if...else</strong> pattern as many times as needed:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">bool_evens</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">False</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">bool_evens</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">bool_evens</span>
-<span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+<span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">numbers</span>
@@ -82,11 +84,11 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">divide_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;div by 2&#39;</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;div by 3&#39;</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">divide_list</span>
 <span class="p">[</span><span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 3&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;div by 2&#39;</span><span class="p">,</span> <span class="s1">&#39;div by 3&#39;</span><span class="p">]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Generator expressions are created the same way as list comprehensions but with parentheses around the expression instead of square brackets. To get all of the elements in the generator, you can iterate over it. When you want to create a list to iterate over, generator expressions can be used instead for an increase in performance. The increase in performance comes from not storing all of the elements in the iterable beforehand. The generator expression supplies elements as the iterator asks for them.</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">evens_gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">evens_gen</span> <span class="o">=</span> <span class="p">(</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">evens_gen</span>
 <span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="o">&lt;</span><span class="n">genexpr</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x103daf5e8</span><span class="o">&gt;</span>
 <span class="o">&gt;&gt;&gt;</span>
@@ -96,11 +98,11 @@
 <span class="o">...</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span>
 <span class="mi">90</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>If you want to create dictionaries or sets using these expressions, you can! Here are some examples:</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">num_set</span>
 <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span>
 <span class="o">&gt;&gt;&gt;</span>
@@ -111,19 +113,19 @@
 <span class="o">&gt;&gt;&gt;</span> <span class="n">num_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">num</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">num_dict</span>
 <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">&#39;7&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">&#39;9&#39;</span><span class="p">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The difference between set and dictionary comprehensions is that dictionary comprehensions have a <strong>key:value</strong> pair as the element you're inserting into the dictionary. Both set and dictionary comprehensions use curly braces instead of square brackets or parentheses.</p>
 <p>Make sure not to use these expressions for a side-effect. These expressions should be used to create iterables. If you wanted to print out all even numbers below 10, you should use a for loop instead of a generator or a list:</p>
-<div class="highlight"><pre><span></span><span class="c1"># Use this:</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Use this:</span>
 <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
 
 <span class="c1"># Instead of this:</span>
-<span class="p">[</span><span class="k">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
-</pre></div>
+<span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
 
 
 <p>It can be memory-expensive to create a large list, and if you're only using the list for its side-effects, then the list is thrown away after you create it and you potentially lost a lot of performance speed creating the intermediate list.</p>
@@ -156,10 +158,10 @@
 
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
 </body>

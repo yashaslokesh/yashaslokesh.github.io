@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
         <title>Yashas's Blog</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Yashas's Blog </a></h1>
+                <h1><a href="/">Yashas's Blog</a></h1>
                 <nav><ul>
                     <li><a href="/pages/about-me.html">About</a></li>
                     <li><a href="/category/misc.html">misc</a></li>
@@ -41,13 +42,13 @@ only took about 45 minutes to create from start to finish, with most of the time
 to get it to look <em>just</em> right.</p>
 <p>To start off, I created the <code>inventory.py</code> file inside the <code>core/</code> package, then added some
 necessary imports:</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygame</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pygame</span>
 <span class="kn">from</span> <span class="nn">pygame.locals</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
 
-<span class="kn">import</span> <span class="nn">core.constants</span> <span class="kn">as</span> <span class="nn">c</span>
-</pre></div>
+<span class="kn">import</span> <span class="nn">core.constants</span> <span class="k">as</span> <span class="nn">c</span>
+</code></pre></div>
 
 
 <p>The first two lines import the <a href="https://www.pygame.org/news">pygame</a> library and
@@ -65,7 +66,7 @@ objects. If you haven't work with classes in Python before, it's really simple;
 we're going to add a constructor, an <code>update()</code> method, and a <code>draw()</code> method.</p>
 <p>Here's the basic skeleton of how we create that:</p>
 <p><code>inventory.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
@@ -74,12 +75,12 @@ we're going to add a constructor, an <code>update()</code> method, and a <code>d
 
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">):</span>
         <span class="k">pass</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>We'll set a few constants for inventory size and position on the screen.</p>
 <p><code>constants.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="n">INVENTORY_SIZE</span> <span class="o">=</span> <span class="n">INVENTORY_WIDTH</span><span class="p">,</span> <span class="n">INVENTORY_HEIGHT</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">INVENTORY_SIZE</span> <span class="o">=</span> <span class="n">INVENTORY_WIDTH</span><span class="p">,</span> <span class="n">INVENTORY_HEIGHT</span> <span class="o">=</span> <span class="p">(</span>
     <span class="mi">600</span><span class="p">,</span>
     <span class="mi">600</span><span class="p">,</span>
 <span class="p">)</span>
@@ -88,7 +89,7 @@ we're going to add a constructor, an <code>update()</code> method, and a <code>d
     <span class="n">SCREEN_WIDTH</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">INVENTORY_WIDTH</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">SCREEN_HEIGHT</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">INVENTORY_HEIGHT</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>And now we can work on the constructor. We want the active item, i.e. the box
@@ -102,7 +103,7 @@ squares of the inventory. To do this, we can create an empty list and then popul
 it with four lists of four RBG triples each.</p>
 <p>All together, it could look something like this:</p>
 <p><code>inventory.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
@@ -118,7 +119,7 @@ it with four lists of four RBG triples each.</p>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
                 <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sample_item_colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Note that we use the <code>self.</code> syntax to indicate instance variables.
@@ -126,7 +127,7 @@ This code just sets up a rough visual look for the inventory. Next, we want to
 draw this inventory to the screen. The <code>blit()</code> method of a <code>Surface</code> object will
 draw one surface onto another. </p>
 <p><code>inventory.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">):</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="p">(</span><span class="mi">172</span><span class="p">,</span> <span class="mi">237</span><span class="p">,</span> <span class="mi">182</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span>
@@ -141,7 +142,7 @@ draw one surface onto another. </p>
                 <span class="n">item_rect</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="mi">150</span><span class="p">)</span>
                 <span class="c1"># item_rect.size = 150, 150</span>
                 <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_item_colors</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">item_rect</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>This code draws a <code>rect</code> of a light-green color, almost like the color of jade. Then it copies the
@@ -156,7 +157,7 @@ for picking items be the arrow keys. Recall that we defined the <code>active_ite
 earlier. We'll be mutating this list as we receive input. We can create an <code>update()</code> method
 that accepts an object describing a keydown event.</p>
 <p><code>inventory.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keydown_event</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">keydown_event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_DOWN</span><span class="p">:</span>
@@ -167,7 +168,7 @@ that accepts an object describing a keydown event.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
         <span class="k">elif</span> <span class="n">keydown_event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_RIGHT</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>To use this method, we need to pass in an appropriate event. How do we do that? All pygame events 
@@ -182,7 +183,7 @@ to the top of the inventory selection screen, but it just goes down forever. Thi
 has an easy fix; when we go to the -1 or the 4 position we wrap back to the appropriate side
 of the inventory square.</p>
 <p><code>inventory.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keydown_event</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">keydown_event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_DOWN</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -200,7 +201,7 @@ of the inventory square.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Now we actually need to use the <code>active_item</code> list to draw a selection box. Back to the <code>draw()</code>
@@ -211,7 +212,7 @@ a frame, so that the frame encloses the selected object.</p>
 <p>We can pick some arbitrary constant thickness that's less than half the width of the box, so less 
 than or equal to 75. I'll pick 20, and add it to <code>constants.py</code> as <code>SELECTION_BOX_THICKNESS = 20</code>.</p>
 <p><code>inventory.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; omitted draw code &quot;&quot;&quot;</span>
@@ -229,7 +230,7 @@ than or equal to 75. I'll pick 20, and add it to <code>constants.py</code> as <c
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span>
             <span class="n">screen</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">selection_box</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">SELECTION_BOX_THICKNESS</span>
         <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Here's the extra code added in the <code>draw()</code> method. <code>pygame</code> draws the thickness of the box 
@@ -244,22 +245,22 @@ the inventory as part of the <code>Player</code> class, because each player has 
 to draw the inventory, we access it through our player and call the draw method with our
 screen surface.</p>
 <p><code>game.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Game</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Game</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
-        <span class="n">running</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span> <span class="ow">or</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_q</span><span class="p">):</span>
-                    <span class="n">running</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">inventory</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">inventory</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)</span>
 
             <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>What if the player is just interacting
@@ -270,15 +271,15 @@ and on iteration of the game loop, we watch for a certain keypress, maybe the <c
 activate/deactivate the inventory screen. So we only update and draw the inventory when it is
 active.</p>
 <p><code>game.py</code>:</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Game</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Game</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">inventory_active</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inventory_active</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="n">running</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">QUIT</span> <span class="ow">or</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_q</span><span class="p">):</span>
-                    <span class="n">running</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">KEYDOWN</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_i</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">inventory_active</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inventory_active</span>
@@ -293,7 +294,7 @@ active.</p>
                 <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">inventory</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)</span>
 
             <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>The <code>player</code> sprite has an inventory, and we update and draw that one. </p>
@@ -461,10 +462,10 @@ If you have any questions, you can easily contact me on Twitter. </p>
 
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
 </body>
