@@ -6,18 +6,20 @@ Authors: Yashas Lokesh
 Status: published
 Summary: Learn more about me.
 
-Hello there! This is my blog/portfolio/thought website. Though this website has
-not been updated since January at the time of me writing this, I hope to
-push more updates concerning my activities as a college student and as a developer.
+Hello there! This is my blog/portfolio/thought website. 
 
 My hope is that, by writing about stuff I'm working on or thinking about here, 
-I'll be more motivated to pursue side activities. 
+I'll be more motivated to pursue side programming and hardware projects.
 
-As a CS & Math double major, student-initiated course facilitator,
-and debate team member, school and its extracurriculars take most of my time, 
-but I enjoy summer and winter breaks where I can sit down and work on software
-projects all the time. 
+School and extracurriculars take up most of my time, so I try to
+get an article or a small project finished during winter and summer breaks.
 
-Starting from November 2019, I've become a member of the [Bitcamp](https://bit.camp/) tech team.
+I had a SDE internship with Amazon this past summer, and I've had
+experience with teaching and with creating
+open-source projects through working with some PhD students
+at UMD. If you're interested in contacting me, links to my LinkedIn
+and Twitter are at the bottom of the page.
 
-My current project is building some sort of adventurer game with Python & Pygame.
+My current project is: experimenting with making an app with BeeWare, and
+working on OccupancyViz, an open-source library for
+visualizing LIDAR occupancy grid data (not publicly released, yet).
