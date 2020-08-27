@@ -2,24 +2,25 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
+        <meta name="generator" content="Pelican" />
         <title>Yashas's Blog - algorithms</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
-        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
+        <link rel="stylesheet" href="https://yashaslokesh.github.io/theme/css/main.css" />
+        <link href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="/">Yashas's Blog </a></h1>
+                <h1><a href="https://yashaslokesh.github.io/">Yashas's Blog</a></h1>
                 <nav><ul>
-                    <li><a href="/pages/about-me.html">About</a></li>
-                    <li><a href="/category/misc.html">misc</a></li>
-                    <li><a href="/category/python.html">Python</a></li>
+                    <li><a href="https://yashaslokesh.github.io/pages/about-me.html">About</a></li>
+                    <li><a href="https://yashaslokesh.github.io/category/misc.html">misc</a></li>
+                    <li><a href="https://yashaslokesh.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/optimizing-fibonacci-computation.html">Optimizing Fibonacci Computation</a></h1>
+                    <h1 class="entry-title"><a href="https://yashaslokesh.github.io/optimizing-fibonacci-computation.html">Optimizing Fibonacci Computation</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2018-12-28T08:46:00-05:00">
                 Published: Fri 28 December 2018
@@ -30,10 +31,10 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/yashas-lokesh.html">Yashas Lokesh</a>
+                By                         <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
         </address>
-<p>In <a href="/category/python.html">Python</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> <a href="/tag/algorithms.html">algorithms</a> </p>
+<p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
+<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/algorithms.html">algorithms</a> </p>
 </footer><!-- /.post-info --><p>I posted about this on <a href="https://twitter.com/yashaslokesh_/status/1078510658633846785">Twitter</a> yesterday.</p>
 <p>I've been attempting to study the topic of algorithms this break because one of my classes next semester will cover exactly that. I came upon an MIT series of lectures for a class named "Introduction to Algorithms", and I reached <a href="https://youtu.be/OQ5jsbhAv_M">this video</a> yesterday on dynamic programming.</p>
 <p>The professor says that there is a O(log <em>n</em>) algorithm for computing fibonacci numbers, and I'm instantly intrigued. I assumed that O(<em>n</em>) was the best that could be accomplished because all of the fibonacci functions we used in our classes were written that way.</p>
@@ -41,10 +42,10 @@
 In particular, they list this formula:
 </p>
 <div class="math">$$
- \begin{pmatrix}
+** \begin{pmatrix}
   1 &amp; 1 \\
   1 &amp; 0 \\
- \end{pmatrix}^{n}
+ \end{pmatrix}**^{n}
 =
  \begin{pmatrix}
   F_{n+1} &amp; F_{n} \\
@@ -80,7 +81,7 @@ still applies for matrices. Along this line of logic, if we want to compute the 
 
 <p>The code snippet inside <strong>timeit.timeit()</strong> has to be self-contained. It cannot use any external variables. We can, however, pass in a string containing commands that will setup the environment for the code snippet to work. We can use the <strong>make_setup_string()</strong> function for this purpose.</p>
 <p>My final results, as I also posted on Twitter, are shown here:</p>
-<p><img alt="Image of the timing results, you can look on Twitter if you can't view it here using the link above." src="/images/lower-res-timings.png"></p>
+<p><img alt="Image of the timing results, you can look on Twitter if you can't view it here using the link above." src="https://yashaslokesh.github.io/images/lower-res-timings.png"></p>
 <p>The timing for the linear_fibonacci() function increases by about 28 seconds every increase of 15 to the input, so we accomplished a linear, or O(<em>n</em>) algorithm.</p>
 <p>The timing for the log_fibonacci() function does not follow this same trend. For <em>n</em>=60 and <em>n</em>=90, the timings are lower than the next lower value of <em>n</em>. Even with the input size increasing linearly, there is not a large change in the timing, so we implemented a correct O(log <em>n</em>) algorithm for finding fibonacci numbers.</p>
 <p>Thanks for reading! Follow me on Twitter or look at some of my other work on GitHub by clicking on the social links below.</p>
@@ -154,7 +155,7 @@ still applies for matrices. Along this line of logic, if we want to compute the 
                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            <li><a href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
                             <li><a href="https://twitter.com/yashaslokesh_">My Twitter</a></li>
                             <li><a href="https://www.linkedin.com/in/yashaslokesh/">My LinkedIn</a></li>
@@ -165,10 +166,10 @@ still applies for matrices. Along this line of logic, if we want to compute the 
 
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
                 </address><!-- /#about -->
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
     <script type="text/javascript">
