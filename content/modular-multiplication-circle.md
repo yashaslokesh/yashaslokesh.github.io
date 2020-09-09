@@ -1,7 +1,7 @@
 Title: Modular Multiplication Circle with Python
 Date: 2020-08-26 20:10
 Modified: 2020-08-26 20:10
-Category: Python, Math, Pycairo
+Category: Python
 Tags: python, pycairo, math
 Authors: Yashas Lokesh
 Slug: mod-mult-circle
