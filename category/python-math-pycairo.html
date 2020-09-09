@@ -3,10 +3,9 @@
 <head>
         <meta charset="utf-8" />
         <meta name="generator" content="Pelican" />
-        <title>Modular Multiplication Circle with Python</title>
+        <title>Yashas's Blog - Python, Math, Pycairo</title>
         <link rel="stylesheet" href="https://yashaslokesh.github.io/theme/css/main.css" />
         <link href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
-        <meta name="description" content="In this article, we create a modular multiplication circle visualization using pycairo." />
 </head>
 
 <body id="index" class="home">
@@ -16,17 +15,13 @@
                     <li><a href="https://yashaslokesh.github.io/pages/about-me.html">About</a></li>
                     <li><a href="https://yashaslokesh.github.io/category/misc.html">misc</a></li>
                     <li><a href="https://yashaslokesh.github.io/category/python.html">Python</a></li>
+                    <li class="active"><a href="https://yashaslokesh.github.io/category/python-math-pycairo.html">Python, Math, Pycairo</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="https://yashaslokesh.github.io/drafts/mod-mult-circle.html" rel="bookmark"
-           title="Permalink to Modular Multiplication Circle with Python">Modular Multiplication Circle with Python</a></h1>
-    </header>
 
-    <div class="entry-content">
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://yashaslokesh.github.io/mod-mult-circle.html">Modular Multiplication Circle with Python</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2020-08-26T20:10:00-04:00">
                 Published: Wed 26 August 2020
@@ -41,13 +36,13 @@
         </address>
 <p>In <a href="https://yashaslokesh.github.io/category/python-math-pycairo.html">Python, Math, Pycairo</a>.</p>
 <p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/pycairo.html">pycairo</a> <a href="https://yashaslokesh.github.io/tag/math.html">math</a> </p>
-</footer><!-- /.post-info -->      <h2>Intro</h2>
+</footer><!-- /.post-info --><h2>Intro</h2>
 <p>I was browsing <a href="https://www.reddit.com/r/pygame">r/pygame</a> 
 when I saw <a href="https://www.reddit.com/r/pygame/comments/ekfcor/modular_multiplication_circle/">this post</a>, 
 and I was instantly entranced by the curious shapes being created by this visualization.
 The creator linked to <a href="https://demonstrations.wolfram.com/ModularMultiplicationOnACircle/">this demonstration</a>,
 and I decided to recreate the image in Python. I usually use <a href="https://www.pygame.org/news"><code>pygame</code></a>, but the creator 
-used pygame to generate their images, so I thought, "Hmmmm, let's try something different." I've been meaning to learn 
+used pygame to generate their images. I wanted to try something different, and I've been meaning to learn 
 <a href="https://pycairo.readthedocs.io/en/latest/"><code>pycairo</code></a>, so I figured this would be the perfect opportunity: I can learn
 this graphics library by make a cool-looking math visual.</p>
 <h2>The Circle</h2>
@@ -305,10 +300,13 @@ to contact me <a href="https://twitter.com/yashaslokesh_">on Twitter</a>.</p>
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
     mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
         "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
         "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
         "    displayAlign: '"+ align +"'," +
@@ -322,6 +320,8 @@ to contact me <a href="https://twitter.com/yashaslokesh_">on Twitter</a>.</p>
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
         "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
         "    }, " +
@@ -342,13 +342,12 @@ to contact me <a href="https://twitter.com/yashaslokesh_">on Twitter</a>.</p>
                 "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
             "});" +
         "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-</script>
-    </div><!-- /.entry-content -->
-
-  </article>
-</section>
+</script>                </article>
+            </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
