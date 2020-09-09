@@ -5,7 +5,7 @@ Category: Python, Math, Pycairo
 Tags: python, pycairo, math
 Authors: Yashas Lokesh
 Slug: mod-mult-circle
-Status: draft
+Status: published
 Summary: In this article, we create a modular multiplication circle visualization using pycairo.
 
 ## Intro
@@ -15,7 +15,7 @@ when I saw [this post](https://www.reddit.com/r/pygame/comments/ekfcor/modular_m
 and I was instantly entranced by the curious shapes being created by this visualization.
 The creator linked to [this demonstration](https://demonstrations.wolfram.com/ModularMultiplicationOnACircle/),
 and I decided to recreate the image in Python. I usually use [`pygame`](https://www.pygame.org/news), but the creator 
-used pygame to generate their images, so I thought, "Hmmmm, let's try something different." I've been meaning to learn 
+used pygame to generate their images. I wanted to try something different, and I've been meaning to learn 
 [`pycairo`](https://pycairo.readthedocs.io/en/latest/), so I figured this would be the perfect opportunity: I can learn
 this graphics library by make a cool-looking math visual.
 
