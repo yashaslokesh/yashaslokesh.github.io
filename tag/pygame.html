@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <meta name="generator" content="Pelican" />
-        <title>Yashas's Blog - pygame</title>
-        <link rel="stylesheet" href="https://yashaslokesh.github.io/theme/css/main.css" />
-        <link href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
-</head>
+        <head>
+                        <meta charset="utf-8" />
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                        <meta name="generator" content="Pelican" />
+                        <title>Yashas's Blog - pygame</title>
+                        <link rel="stylesheet" href="https://yashaslokesh.github.io/theme/css/main.css" />
+                                <link href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
+        </head>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="https://yashaslokesh.github.io/">Yashas's Blog</a></h1>
-                <nav><ul>
-                    <li><a href="https://yashaslokesh.github.io/pages/about-me.html">About</a></li>
-                    <li><a href="https://yashaslokesh.github.io/category/misc.html">misc</a></li>
-                    <li><a href="https://yashaslokesh.github.io/category/python.html">Python</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
+        <body id="index" class="home">
+                <header id="banner" class="body">
+                        <h1><a href="https://yashaslokesh.github.io/">Yashas's Blog</a></h1>
+                        <nav><ul>
+                                                <li><a href="https://yashaslokesh.github.io/pages/about-me.html">About</a></li>
+                                                <li><a href="https://yashaslokesh.github.io/category/misc.html">misc</a></li>
+                                                <li><a href="https://yashaslokesh.github.io/category/python.html">Python</a></li>
+                        </ul></nav>
+                </header><!-- /#banner -->
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="https://yashaslokesh.github.io/pyadventure-basic-inventory-update.html">PyAdventure Basic Inventory Update</a></h1>
+                <aside id="featured" class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="https://yashaslokesh.github.io/pyadventure-basic-inventory-update.html">PyAdventure Basic Inventory Update</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2019-12-15T06:00:00-05:00">
                 Published: Sun 15 December 2019
         </abbr>
-		<br />
-        <abbr class="modified" title="2019-12-15T06:00:00-05:00">
-                Updated: Sun 15 December 2019
-        </abbr>
+                <br />
+                <abbr class="modified" title="2019-12-15T06:00:00-05:00">
+                        Updated: Sun 15 December 2019
+                </abbr>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
-<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/pygame.html">pygame</a> </p>
+                <address class="vcard author">
+                        By                                 <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
+                </address>
+        <p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
+<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/pygame.html">pygame</a> </p>        
 </footer><!-- /.post-info --><h2>Setup</h2>
 <p>So for my yet-to-be-named adventure game, I decided that one good area to make progress in
 would be creating an inventory system. In this post, I'll talk about how I created the
@@ -50,7 +51,6 @@ necessary imports:</p>
 
 <span class="kn">import</span> <span class="nn">core.constants</span> <span class="k">as</span> <span class="nn">c</span>
 </code></pre></div>
-
 
 <p>The first two lines import the <a href="https://www.pygame.org/news">pygame</a> library and
 the set of constants from <code>pygame.locals</code>. These constants are used when detecting
@@ -78,7 +78,6 @@ we're going to add a constructor, an <code>update()</code> method, and a <code>d
         <span class="k">pass</span>
 </code></pre></div>
 
-
 <p>We'll set a few constants for inventory size and position on the screen.</p>
 <p><code>constants.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">INVENTORY_SIZE</span> <span class="o">=</span> <span class="n">INVENTORY_WIDTH</span><span class="p">,</span> <span class="n">INVENTORY_HEIGHT</span> <span class="o">=</span> <span class="p">(</span>
@@ -91,7 +90,6 @@ we're going to add a constructor, an <code>update()</code> method, and a <code>d
     <span class="n">SCREEN_HEIGHT</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">INVENTORY_HEIGHT</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-
 
 <p>And now we can work on the constructor. We want the active item, i.e. the box
 that the player has currently selected, to start at some constant, say <code>[0,0]</code>,
@@ -122,14 +120,13 @@ it with four lists of four RBG triples each.</p>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sample_item_colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 </code></pre></div>
 
-
 <p>Note that we use the <code>self.</code> syntax to indicate instance variables.
 This code just sets up a rough visual look for the inventory. Next, we want to
 draw this inventory to the screen. The <code>blit()</code> method of a <code>Surface</code> object will
 draw one surface onto another. </p>
 <p><code>inventory.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">):</span>
         <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="p">(</span><span class="mi">172</span><span class="p">,</span> <span class="mi">237</span><span class="p">,</span> <span class="mi">182</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span>
 
@@ -145,7 +142,6 @@ draw one surface onto another. </p>
                 <span class="n">pygame</span><span class="o">.</span><span class="n">draw</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_item_colors</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">item_rect</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>This code draws a <code>rect</code> of a light-green color, almost like the color of jade. Then it copies the
 rect of the inventory object and adjusts the size to draw each tile of the inventory. The 
 inventory's rect is copied because it already has the correct <code>(x, y)</code> coordinates. Then, we
@@ -159,7 +155,7 @@ earlier. We'll be mutating this list as we receive input. We can create an <code
 that accepts an object describing a keydown event.</p>
 <p><code>inventory.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keydown_event</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">keydown_event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_DOWN</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -170,7 +166,6 @@ that accepts an object describing a keydown event.</p>
         <span class="k">elif</span> <span class="n">keydown_event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">K_RIGHT</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 </code></pre></div>
-
 
 <p>To use this method, we need to pass in an appropriate event. How do we do that? All pygame events 
 can be obtained using <code>pygame.event.get()</code>, and as we iterate through the returned collection, if
@@ -204,7 +199,6 @@ of the inventory square.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 </code></pre></div>
 
-
 <p>Now we actually need to use the <code>active_item</code> list to draw a selection box. Back to the <code>draw()</code>
 method, we can do something similar to drawing the tiles for each item rectangle from before.
 We want it to have the same size and start from the same <code>x, y</code> coordinates, but this
@@ -214,9 +208,9 @@ a frame, so that the frame encloses the selected object.</p>
 than or equal to 75. I'll pick 20, and add it to <code>constants.py</code> as <code>SELECTION_BOX_THICKNESS = 20</code>.</p>
 <p><code>inventory.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Inventory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">screen</span><span class="p">:</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Surface</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; omitted draw code &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; omitted draw code &quot;&quot;&quot;</span>
         <span class="n">selection_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">selection_box</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">150</span>
         <span class="n">selection_box</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">150</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
@@ -233,7 +227,6 @@ than or equal to 75. I'll pick 20, and add it to <code>constants.py</code> as <c
         <span class="p">)</span>
 </code></pre></div>
 
-
 <p>Here's the extra code added in the <code>draw()</code> method. <code>pygame</code> draws the thickness of the box 
 outwards, so we need to adjust the <code>x, y</code> coordinates to
 start closer to actual size of the box and then adjust the <code>width</code> and <code>height</code> to constrain
@@ -247,9 +240,9 @@ to draw the inventory, we access it through our player and call the draw method 
 screen surface.</p>
 <p><code>game.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Game</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; omitted code &quot;&quot;&quot;</span>
         <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pygame</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
@@ -262,7 +255,6 @@ screen surface.</p>
 
             <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
 </code></pre></div>
-
 
 <p>What if the player is just interacting
 with the other parts of the game, not the inventory? Then we shouldn't be updating the selection
@@ -297,51 +289,41 @@ active.</p>
             <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
 </code></pre></div>
 
-
 <p>The <code>player</code> sprite has an inventory, and we update and draw that one. </p>
 <p>All the code I used can be found on <a href="https://github.com/yashaslokesh/pyadventure">my GitHub</a>. 
 If you have any questions, you can easily contact me on Twitter. </p>
-<p>Thanks for reading!</p>                </article>
-            </aside><!-- /#featured -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="http://tutorial.math.lamar.edu/">Paul's Calc Notes</a></li>
-                            <li><a href="https://www.pygame.org/news">Pygame</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+<p>Thanks for reading!</p>                    </article>
+                </aside><!-- /#featured -->
+                <section id="extras" class="body">
+                                <div class="blogroll">
+                                        <h2>links</h2>
+                                        <ul>
+                                                        <li><a href="http://getpelican.com/">Pelican</a></li>
+                                                        <li><a href="http://python.org/">Python.org</a></li>
+                                                        <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                                                        <li><a href="http://tutorial.math.lamar.edu/">Paul's Calc Notes</a></li>
+                                                        <li><a href="https://www.pygame.org/news">Pygame</a></li>
+                                        </ul>
+                                </div><!-- /.blogroll -->
+                                <div class="social">
+                                        <h2>social</h2>
+                                        <ul>
+                                                        <li><a href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="https://twitter.com/yashaslokesh_">My Twitter</a></li>
-                            <li><a href="https://www.linkedin.com/in/yashaslokesh/">My LinkedIn</a></li>
-                            <li><a href="https://github.com/yashaslokesh">My GitHub</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+                                                        <li><a href="https://twitter.com/yashaslokesh_">My Twitter</a></li>
+                                                        <li><a href="https://www.linkedin.com/in/yashaslokesh/">My LinkedIn</a></li>
+                                                        <li><a href="https://github.com/yashaslokesh">My GitHub</a></li>
+                                        </ul>
+                                </div><!-- /.social -->
+                </section><!-- /#extras -->
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
-                </address><!-- /#about -->
+                <footer id="contentinfo" class="body">
+                        <address id="about" class="vcard body">
+                                Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
+                        </address><!-- /#about -->
 
-                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+                        <p>The theme is by <a rel="nofollow" href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                </footer><!-- /#contentinfo -->
 
-    <script type="text/javascript">
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-123139556-3', 'auto');
-    ga('send', 'pageview');
-    </script>
-</body>
+        </body>
 </html>

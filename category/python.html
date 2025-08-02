@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-        <meta charset="utf-8" />
-        <meta name="generator" content="Pelican" />
-        <title>Yashas's Blog - Python</title>
-        <link rel="stylesheet" href="https://yashaslokesh.github.io/theme/css/main.css" />
-        <link href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
-</head>
+        <head>
+                        <meta charset="utf-8" />
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                        <meta name="generator" content="Pelican" />
+                        <title>Yashas's Blog - Python</title>
+                        <link rel="stylesheet" href="https://yashaslokesh.github.io/theme/css/main.css" />
+                                <link href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yashas's Blog Atom Feed" />
+        </head>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="https://yashaslokesh.github.io/">Yashas's Blog</a></h1>
-                <nav><ul>
-                    <li><a href="https://yashaslokesh.github.io/pages/about-me.html">About</a></li>
-                    <li><a href="https://yashaslokesh.github.io/category/misc.html">misc</a></li>
-                    <li class="active"><a href="https://yashaslokesh.github.io/category/python.html">Python</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
+        <body id="index" class="home">
+                <header id="banner" class="body">
+                        <h1><a href="https://yashaslokesh.github.io/">Yashas's Blog</a></h1>
+                        <nav><ul>
+                                                <li><a href="https://yashaslokesh.github.io/pages/about-me.html">About</a></li>
+                                                <li><a href="https://yashaslokesh.github.io/category/misc.html">misc</a></li>
+                                                <li class="active"><a href="https://yashaslokesh.github.io/category/python.html">Python</a></li>
+                        </ul></nav>
+                </header><!-- /#banner -->
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="https://yashaslokesh.github.io/mod-mult-circle.html">Modular Multiplication Circle with Python</a></h1>
+                <aside id="featured" class="body">
+                    <article>
+                        <h1 class="entry-title"><a href="https://yashaslokesh.github.io/mod-mult-circle.html">Modular Multiplication Circle with Python</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2020-08-26T20:10:00-04:00">
                 Published: Wed 26 August 2020
         </abbr>
-		<br />
-        <abbr class="modified" title="2020-08-26T20:10:00-04:00">
-                Updated: Wed 26 August 2020
-        </abbr>
+                <br />
+                <abbr class="modified" title="2020-08-26T20:10:00-04:00">
+                        Updated: Wed 26 August 2020
+                </abbr>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
-<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/pycairo.html">pycairo</a> <a href="https://yashaslokesh.github.io/tag/math.html">math</a> </p>
+                <address class="vcard author">
+                        By                                 <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
+                </address>
+        <p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
+<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/pycairo.html">pycairo</a> <a href="https://yashaslokesh.github.io/tag/math.html">math</a> </p>        
 </footer><!-- /.post-info --><h2>Intro</h2>
 <p>I was browsing <a href="https://www.reddit.com/r/pygame">r/pygame</a> 
 when I saw <a href="https://www.reddit.com/r/pygame/comments/ekfcor/modular_multiplication_circle/">this post</a>, 
@@ -79,7 +80,6 @@ I made my standard imports:</p>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </code></pre></div>
 
-
 <h2>Starting with PyCairo</h2>
 <p>I went through the <code>pycairo</code> introduction and quickly learned that all of the drawing is done with contexts. A context
 is created from a surface, and we can use the context object's methods to move around a point and then draw lines or shapes.</p>
@@ -99,7 +99,6 @@ is created from a surface, and we can use the context object's methods to move a
 
     <span class="n">surface</span><span class="o">.</span><span class="n">write_to_png</span><span class="p">(</span><span class="s1">&#39;circle_1.png&#39;</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>Let's go over this code before showing the final result:</p>
 <p>Every surface has to have a size specified. Here I choose a size of 500x500 so
@@ -171,7 +170,6 @@ final vector using <code>vec = rot_vec + center</code>.</p>
     <span class="k">return</span> <span class="n">vec</span> <span class="o">+</span> <span class="n">center</span>
 </code></pre></div>
 
-
 <p>The <code>center</code> and <code>start_vec</code> values were calculated so that the size
 of the image can easily be changed and everything will still work.</p>
 <h2>Drawing the Circle</h2>
@@ -205,7 +203,6 @@ find the remainder using: <code>rem = (num * mult) % mod</code>.</p>
     <span class="n">circ_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;mod_</span><span class="si">{</span><span class="n">mod</span><span class="si">}</span><span class="s1">_mult_</span><span class="si">{</span><span class="n">mult</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="n">surface</span><span class="o">.</span><span class="n">write_to_png</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;complete_circle_</span><span class="si">{</span><span class="n">circ_str</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>We use the <code>get_coords_for_num</code> function to get coordinates for points 
 and then the Cairo drawing functions to connect a start and end point
@@ -254,7 +251,6 @@ in this case the generated image name will be
     <span class="n">circ_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;mod_</span><span class="si">{</span><span class="n">mod</span><span class="si">}</span><span class="s1">_mult_</span><span class="si">{</span><span class="n">mult</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="n">surface</span><span class="o">.</span><span class="n">write_to_png</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;complete_circle_</span><span class="si">{</span><span class="n">circ_str</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>which I used to generate:</p>
 <p><img alt="complete_circle_mod_100_mult_5.png" src="https://yashaslokesh.github.io/images/complete_circle_mod_100_mult_5.png"></p>
@@ -345,183 +341,174 @@ to contact me <a href="https://twitter.com/yashaslokesh_">on Twitter</a>.</p>
     (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-</script>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</script>                    </article>
+                </aside><!-- /#featured -->
+                    <section id="content" class="body">
+                        <h1>Other articles</h1>
+                        <hr />
+                        <ol id="posts-list" class="hfeed">
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://yashaslokesh.github.io/pyadventure-basic-inventory-update.html" rel="bookmark"
-                           title="Permalink to PyAdventure Basic Inventory Update">PyAdventure Basic Inventory Update</a></h1>
-                </header>
+                <li><article class="hentry">
+                    <header>
+                        <h1><a href="https://yashaslokesh.github.io/pyadventure-basic-inventory-update.html" rel="bookmark"
+                               title="Permalink to PyAdventure Basic Inventory Update">PyAdventure Basic Inventory Update</a></h1>
+                    </header>
 
-                <div class="entry-content">
+                    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-12-15T06:00:00-05:00">
                 Published: Sun 15 December 2019
         </abbr>
-		<br />
-        <abbr class="modified" title="2019-12-15T06:00:00-05:00">
-                Updated: Sun 15 December 2019
-        </abbr>
+                <br />
+                <abbr class="modified" title="2019-12-15T06:00:00-05:00">
+                        Updated: Sun 15 December 2019
+                </abbr>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
-<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/pygame.html">pygame</a> </p>
-</footer><!-- /.post-info -->                <p>An update to my adventure game where I create the inventory interface and provide some basic controls for it.</p>
-                <a class="readmore" href="https://yashaslokesh.github.io/pyadventure-basic-inventory-update.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
+                <address class="vcard author">
+                        By                                 <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
+                </address>
+        <p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
+<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/pygame.html">pygame</a> </p>        
+</footer><!-- /.post-info -->                        <p>An update to my adventure game where I create the inventory interface and provide some basic controls for it.</p>
+                        <a class="readmore" href="https://yashaslokesh.github.io/pyadventure-basic-inventory-update.html">read more</a>
+                    </div><!-- /.entry-content -->
+                </article></li>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://yashaslokesh.github.io/inverting-the-colors-of-an-image.html" rel="bookmark"
-                           title="Permalink to Inverting the colors of an image">Inverting the colors of an image</a></h1>
-                </header>
+                <li><article class="hentry">
+                    <header>
+                        <h1><a href="https://yashaslokesh.github.io/inverting-the-colors-of-an-image.html" rel="bookmark"
+                               title="Permalink to Inverting the colors of an image">Inverting the colors of an image</a></h1>
+                    </header>
 
-                <div class="entry-content">
+                    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-01-24T20:46:00-05:00">
                 Published: Thu 24 January 2019
         </abbr>
-		<br />
-        <abbr class="modified" title="2019-01-24T20:46:00-05:00">
-                Updated: Thu 24 January 2019
-        </abbr>
+                <br />
+                <abbr class="modified" title="2019-01-24T20:46:00-05:00">
+                        Updated: Thu 24 January 2019
+                </abbr>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
-<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/numpy.html">numpy</a> <a href="https://yashaslokesh.github.io/tag/pillow.html">pillow</a> </p>
-</footer><!-- /.post-info -->                <p>A small tutorial on inverting the color of images with Python</p>
-                <a class="readmore" href="https://yashaslokesh.github.io/inverting-the-colors-of-an-image.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
+                <address class="vcard author">
+                        By                                 <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
+                </address>
+        <p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
+<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/numpy.html">numpy</a> <a href="https://yashaslokesh.github.io/tag/pillow.html">pillow</a> </p>        
+</footer><!-- /.post-info -->                        <p>A small tutorial on inverting the color of images with Python</p>
+                        <a class="readmore" href="https://yashaslokesh.github.io/inverting-the-colors-of-an-image.html">read more</a>
+                    </div><!-- /.entry-content -->
+                </article></li>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://yashaslokesh.github.io/generator-expressions-and-list-comprehensions.html" rel="bookmark"
-                           title="Permalink to Generator Expressions and List Comprehensions">Generator Expressions and List Comprehensions</a></h1>
-                </header>
+                <li><article class="hentry">
+                    <header>
+                        <h1><a href="https://yashaslokesh.github.io/generator-expressions-and-list-comprehensions.html" rel="bookmark"
+                               title="Permalink to Generator Expressions and List Comprehensions">Generator Expressions and List Comprehensions</a></h1>
+                    </header>
 
-                <div class="entry-content">
+                    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2019-01-08T08:46:00-05:00">
                 Published: Tue 08 January 2019
         </abbr>
-		<br />
-        <abbr class="modified" title="2019-01-08T08:46:00-05:00">
-                Updated: Tue 08 January 2019
-        </abbr>
+                <br />
+                <abbr class="modified" title="2019-01-08T08:46:00-05:00">
+                        Updated: Tue 08 January 2019
+                </abbr>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
-<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> </p>
-</footer><!-- /.post-info -->                <p>We learn about generator expressions and list comprehensions, useful ways to create iterators and lists, respectively.</p>
-                <a class="readmore" href="https://yashaslokesh.github.io/generator-expressions-and-list-comprehensions.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
+                <address class="vcard author">
+                        By                                 <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
+                </address>
+        <p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
+<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> </p>        
+</footer><!-- /.post-info -->                        <p>We learn about generator expressions and list comprehensions, useful ways to create iterators and lists, respectively.</p>
+                        <a class="readmore" href="https://yashaslokesh.github.io/generator-expressions-and-list-comprehensions.html">read more</a>
+                    </div><!-- /.entry-content -->
+                </article></li>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://yashaslokesh.github.io/project-euler-problem-125.html" rel="bookmark"
-                           title="Permalink to Project Euler Problem #125">Project Euler Problem #125</a></h1>
-                </header>
+                <li><article class="hentry">
+                    <header>
+                        <h1><a href="https://yashaslokesh.github.io/project-euler-problem-125.html" rel="bookmark"
+                               title="Permalink to Project Euler Problem #125">Project Euler Problem #125</a></h1>
+                    </header>
 
-                <div class="entry-content">
+                    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2018-12-31T11:58:00-05:00">
                 Published: Mon 31 December 2018
         </abbr>
-		<br />
-        <abbr class="modified" title="2018-12-31T11:58:00-05:00">
-                Updated: Mon 31 December 2018
-        </abbr>
+                <br />
+                <abbr class="modified" title="2018-12-31T11:58:00-05:00">
+                        Updated: Mon 31 December 2018
+                </abbr>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
-<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/math.html">math</a> </p>
-</footer><!-- /.post-info -->                <p>Solving <a href="https://projecteuler.net/problem=125">Project Euler's problem #125</a></p>
-                <a class="readmore" href="https://yashaslokesh.github.io/project-euler-problem-125.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
+                <address class="vcard author">
+                        By                                 <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
+                </address>
+        <p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
+<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/math.html">math</a> </p>        
+</footer><!-- /.post-info -->                        <p>Solving <a href="https://projecteuler.net/problem=125">Project Euler's problem #125</a></p>
+                        <a class="readmore" href="https://yashaslokesh.github.io/project-euler-problem-125.html">read more</a>
+                    </div><!-- /.entry-content -->
+                </article></li>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="https://yashaslokesh.github.io/optimizing-fibonacci-computation.html" rel="bookmark"
-                           title="Permalink to Optimizing Fibonacci Computation">Optimizing Fibonacci Computation</a></h1>
-                </header>
+                <li><article class="hentry">
+                    <header>
+                        <h1><a href="https://yashaslokesh.github.io/optimizing-fibonacci-computation.html" rel="bookmark"
+                               title="Permalink to Optimizing Fibonacci Computation">Optimizing Fibonacci Computation</a></h1>
+                    </header>
 
-                <div class="entry-content">
+                    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2018-12-28T08:46:00-05:00">
                 Published: Fri 28 December 2018
         </abbr>
-		<br />
-        <abbr class="modified" title="2018-12-28T08:46:00-05:00">
-                Updated: Fri 28 December 2018
-        </abbr>
+                <br />
+                <abbr class="modified" title="2018-12-28T08:46:00-05:00">
+                        Updated: Fri 28 December 2018
+                </abbr>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
-        </address>
-<p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
-<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/algorithms.html">algorithms</a> </p>
-</footer><!-- /.post-info -->                <p>We go over my linear-algebra inspired algorithms to compute Fibonacci numbers</p>
-                <a class="readmore" href="https://yashaslokesh.github.io/optimizing-fibonacci-computation.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="http://tutorial.math.lamar.edu/">Paul's Calc Notes</a></li>
-                            <li><a href="https://www.pygame.org/news">Pygame</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                <address class="vcard author">
+                        By                                 <a class="url fn" href="https://yashaslokesh.github.io/author/yashas-lokesh.html">Yashas Lokesh</a>
+                </address>
+        <p>In <a href="https://yashaslokesh.github.io/category/python.html">Python</a>.</p>
+<p>tags: <a href="https://yashaslokesh.github.io/tag/python.html">python</a> <a href="https://yashaslokesh.github.io/tag/algorithms.html">algorithms</a> </p>        
+</footer><!-- /.post-info -->                        <p>We go over my linear-algebra inspired algorithms to compute Fibonacci numbers</p>
+                        <a class="readmore" href="https://yashaslokesh.github.io/optimizing-fibonacci-computation.html">read more</a>
+                    </div><!-- /.entry-content -->
+                </article></li>
+                    </ol><!-- /#posts-list -->
+                    </section><!-- /#content -->
+                <section id="extras" class="body">
+                                <div class="blogroll">
+                                        <h2>links</h2>
+                                        <ul>
+                                                        <li><a href="http://getpelican.com/">Pelican</a></li>
+                                                        <li><a href="http://python.org/">Python.org</a></li>
+                                                        <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                                                        <li><a href="http://tutorial.math.lamar.edu/">Paul's Calc Notes</a></li>
+                                                        <li><a href="https://www.pygame.org/news">Pygame</a></li>
+                                        </ul>
+                                </div><!-- /.blogroll -->
+                                <div class="social">
+                                        <h2>social</h2>
+                                        <ul>
+                                                        <li><a href="https://yashaslokesh.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="https://twitter.com/yashaslokesh_">My Twitter</a></li>
-                            <li><a href="https://www.linkedin.com/in/yashaslokesh/">My LinkedIn</a></li>
-                            <li><a href="https://github.com/yashaslokesh">My GitHub</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
+                                                        <li><a href="https://twitter.com/yashaslokesh_">My Twitter</a></li>
+                                                        <li><a href="https://www.linkedin.com/in/yashaslokesh/">My LinkedIn</a></li>
+                                                        <li><a href="https://github.com/yashaslokesh">My GitHub</a></li>
+                                        </ul>
+                                </div><!-- /.social -->
+                </section><!-- /#extras -->
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a href="https://www.python.org/">Python</a>.
-                </address><!-- /#about -->
+                <footer id="contentinfo" class="body">
+                        <address id="about" class="vcard body">
+                                Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
+                        </address><!-- /#about -->
 
-                <p>The theme is by <a href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+                        <p>The theme is by <a rel="nofollow" href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+                </footer><!-- /#contentinfo -->
 
-    <script type="text/javascript">
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-123139556-3', 'auto');
-    ga('send', 'pageview');
-    </script>
-</body>
+        </body>
 </html>
