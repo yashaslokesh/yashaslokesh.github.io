@@ -41,11 +41,12 @@ DEFAULT_PAGINATION = 10
 # RELATIVE_URLS = True
 
 # Adding plug-ins
-PLUGIN_PATHS = ["/Users/lokeshkrishnappa/Documents/GitHub/pelican-plugins"]
+# PLUGIN_PATHS = ["/Users/lokeshkrishnappa/Documents/GitHub/pelican-plugins"]
 # Activate the render_math plugin
-PLUGINS = ["render_math"]
 
 ## Add static paths
 STATIC_PATHS = ["images"]  # Add images directory from inside content directory
 
 DEFAULT_METADATA = {"status": "draft"}
+
+# THEME='./yeme'

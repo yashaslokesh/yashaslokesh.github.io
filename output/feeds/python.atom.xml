@@ -1,5 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Yashas's Blog - Python</title><link href="https://yashaslokesh.github.io/" rel="alternate"></link><link href="https://yashaslokesh.github.io/feeds/python.atom.xml" rel="self"></link><id>https://yashaslokesh.github.io/</id><updated>2019-12-15T06:00:00-05:00</updated><entry><title>PyAdventure Basic Inventory Update</title><link href="https://yashaslokesh.github.io/pyadventure-basic-inventory-update.html" rel="alternate"></link><published>2019-12-15T06:00:00-05:00</published><updated>2019-12-15T06:00:00-05:00</updated><author><name>Yashas Lokesh</name></author><id>tag:yashaslokesh.github.io,2019-12-15:/pyadventure-basic-inventory-update.html</id><summary type="html">&lt;p&gt;An update to my adventure game where I create the inventory interface and provide some basic controls for it.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Setup&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Yashas's Blog - Python</title><link href="https://yashaslokesh.github.io/" rel="alternate"></link><link href="https://yashaslokesh.github.io/feeds/python.atom.xml" rel="self"></link><id>https://yashaslokesh.github.io/</id><updated>2020-08-26T20:10:00-04:00</updated><entry><title>Modular Multiplication Circle with Python</title><link href="https://yashaslokesh.github.io/mod-mult-circle.html" rel="alternate"></link><published>2020-08-26T20:10:00-04:00</published><updated>2020-08-26T20:10:00-04:00</updated><author><name>Yashas Lokesh</name></author><id>tag:yashaslokesh.github.io,2020-08-26:/mod-mult-circle.html</id><summary type="html">&lt;p&gt;In this article, we create a modular multiplication circle visualization using pycairo.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Intro&lt;/h2&gt;
+&lt;p&gt;I was browsing &lt;a href="https://www.reddit.com/r/pygame"&gt;r/pygame&lt;/a&gt; 
+when I saw &lt;a href="https://www.reddit.com/r/pygame/comments/ekfcor/modular_multiplication_circle/"&gt;this post&lt;/a&gt;, 
+and I was instantly entranced by the curious shapes being created by this visualization.
+The creator linked to &lt;a href="https://demonstrations.wolfram.com/ModularMultiplicationOnACircle/"&gt;this demonstration&lt;/a&gt;,
+and I decided to recreate the image in Python. I usually use &lt;a href="https://www.pygame.org/news"&gt;&lt;code&gt;pygame&lt;/code&gt;&lt;/a&gt;, but the creator 
+used pygame to generate their images. I wanted to try something different, and I've been meaning to learn 
+&lt;a href="https://pycairo.readthedocs.io/en/latest/"&gt;&lt;code&gt;pycairo&lt;/code&gt;&lt;/a&gt;, so I figured this would be the perfect opportunity: I can learn
+this graphics library by make a cool-looking math visual.&lt;/p&gt;
+&lt;h2&gt;The Circle&lt;/h2&gt;
+&lt;p&gt;To create a modular multiplication circle, you pick two numbers; let's call them &lt;span class="math"&gt;\(mod\)&lt;/span&gt; and
+&lt;span class="math"&gt;\(mult\)&lt;/span&gt;. The circle we create will have &lt;span class="math"&gt;\(mod\)&lt;/span&gt; number of points. To each point, we just assign
+each point a number from 0 to &lt;span class="math"&gt;\(mod - 1\)&lt;/span&gt;. For example, if &lt;span class="math"&gt;\(mod = 60\)&lt;/span&gt;, then we number 
+the points from 0 to 59, starting at the top of the circle and going clockwise.&lt;/p&gt;
+&lt;p&gt;Why did I choose to start numbering at the top of the circle and go clock-wise? There was
+no particular reason. You can pick to choose to start at any other position around the
+circle and to go clockwise or counter-clockwise.&lt;/p&gt;
+&lt;p&gt;So then for each point in the circle (call this the starting point), 
+take the number representing that point, multiply it by &lt;span class="math"&gt;\(mult\)&lt;/span&gt; and 
+find the remainder when you divide it by &lt;span class="math"&gt;\(mod\)&lt;/span&gt;. 
+Find the point represented by the remainder (the ending point), and connect
+the two points.&lt;/p&gt;
+&lt;p&gt;This is the algorithm for creating the visualization. Choosing a different number
+of points and varying the multiplier can make chaotic patterns or more beautiful
+patterns. If you vary the color of the lines based on which point
+you're on, you can get a nice color palette, too.&lt;/p&gt;
+&lt;p&gt;I created a prototype with pygame with 1986 points and a multiplier
+of 997. I've since forgotten how exactly I picked the colors, 
+but it looks like red and green show prominently, so
+perhaps I fixed blue while moving from red to green clockwise
+around the circle.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="1986-point mod circle with mult of 997" src="https://yashaslokesh.github.io/images/1986_997.jpeg" style="max-width: 500px"&gt;&lt;/p&gt;
+&lt;p&gt;Now we'll go over how to do this with pycairo.&lt;/p&gt;
+&lt;h2&gt;Setup&lt;/h2&gt;
+&lt;p&gt;I tried using &lt;code&gt;pipenv&lt;/code&gt; with PyCharm for this project, but you can use any up-to-date virtual environment library.
+For creating multiplication circles with an arbitrary amount of points, I thought the easiest way to determine starting
+and ending points for different numbers would be to rotate a vector. One way I thought of doing this was by using &lt;code&gt;numpy&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I installed &lt;code&gt;pycairo&lt;/code&gt; and &lt;code&gt;numpy&lt;/code&gt; in my environment and opened up a file named &lt;code&gt;cairo_circle.py&lt;/code&gt;. At the top of the file,
+I made my standard imports:&lt;/p&gt;
+&lt;p&gt;File: &lt;code&gt;cairo_circle.py&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;cairo&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Starting with PyCairo&lt;/h2&gt;
+&lt;p&gt;I went through the &lt;code&gt;pycairo&lt;/code&gt; introduction and quickly learned that all of the drawing is done with contexts. A context
+is created from a surface, and we can use the context object's methods to move around a point and then draw lines or shapes.&lt;/p&gt;
+&lt;p&gt;To get started and draw a line, I used this code:&lt;/p&gt;
+&lt;p&gt;File: &lt;code&gt;cairo_circle.py&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;500&lt;/span&gt;&lt;span class="p"&gt;,)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ImageSurface&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Format&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ARGB32&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_source_rgb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_line_width&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;move_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;line_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;250&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;250&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stroke&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write_to_png&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;circle_1.png&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let's go over this code before showing the final result:&lt;/p&gt;
+&lt;p&gt;Every surface has to have a size specified. Here I choose a size of 500x500 so
+that the image won't look too grainy and won't be too large of an image&lt;/p&gt;
+&lt;p&gt;The format I chose will create an image with an alpha channel, so any part
+of the image that isn't drawn over with lines will be transparent, so the circle we
+create can be laid on top of other images.&lt;/p&gt;
+&lt;p&gt;Next, we create a context object using by instantiating the &lt;code&gt;cairo.Context&lt;/code&gt; class with our surface. 
+Then we set the drawing color to be white; the arguments have to be floats between 0 and 1. 
+If you have colors with values 0-255, just divide by 255 to get the corresponding float value. 
+We set the line width to be 1, and then move to the top-left corner of the screen. 
+&lt;code&gt;pycairo&lt;/code&gt;'s origin is in the top-left, and the x- and y- values increase to the right and down. 
+Then we draw a line to the middle of the screen and call &lt;code&gt;context.stroke()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, to see the result of our efforts, we save the &lt;code&gt;ImageSurface&lt;/code&gt; to &lt;code&gt;circle_1.png&lt;/code&gt;, which gives us:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="circle 1" src="https://yashaslokesh.github.io/images/circle_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; I used the &lt;code&gt;RGB24&lt;/code&gt; format here instead of &lt;code&gt;ARGB32&lt;/code&gt;, so that the colors show properly.&lt;/p&gt;
+&lt;p&gt;Great! These are all the tools we need to work with Pycairo.&lt;/p&gt;
+&lt;h2&gt;Calculating Coordinates of Points&lt;/h2&gt;
+&lt;p&gt;Now, given a point around the circle, we want to be able to find the coordinates
+for that point. To do this, we can find the angle of the point around
+the circle, rotate a vector by that angle, and then move the base of the
+vector to the center of the Cairo context. The vector then gives us the 
+coordinates.&lt;/p&gt;
+&lt;p&gt;If we have a variable &lt;span class="math"&gt;\(mod\)&lt;/span&gt; and a number &lt;span class="math"&gt;\(num\)&lt;/span&gt;, we can find the angle to the point
+representing that number by calculating &lt;code&gt;angle = ((2.0 * np.pi) / mod) * num&lt;/code&gt;.
+One full rotation around the circle is equivalent
+to &lt;span class="math"&gt;\(2pi\)&lt;/span&gt; radians, so we divide by &lt;span class="math"&gt;\(mod\)&lt;/span&gt; to get the correct angle
+partitions for our circle. Then we multiply by &lt;span class="math"&gt;\(num\)&lt;/span&gt; to get to the
+&lt;span class="math"&gt;\(num\)&lt;/span&gt; point.&lt;/p&gt;
+&lt;p&gt;The top of the circle has &lt;span class="math"&gt;\(num = 0\)&lt;/span&gt;, so the angle will be 0. So we need a vector
+that will straight upwards. We can define this
+vector as &lt;code&gt;start_vec = np.array([0, -240])&lt;/code&gt;. We use a negative 
+y-value so that the vector will point upwards. Remember
+that Cairo's coordinate system has the origin
+in the top-left and x- and y-values increase
+to the right and down.&lt;/p&gt;
+&lt;p&gt;Now we need to rotate this starting vector by our angle. According to
+the &lt;a href="https://en.wikipedia.org/wiki/Rotation_matrix"&gt;Rotation matrix article on Wikipedia&lt;/a&gt;,
+the matrix
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+M = \begin{pmatrix}
+  \cos\theta &amp;amp; -\sin\theta \\
+  \sin\theta &amp;amp; \cos\theta \\
+ \end{pmatrix}
+$$&lt;/div&gt;
+&lt;p&gt;multiplied by our starting vector will give us the desired vector.
+So in our code, we can create the matrix using:
+&lt;code&gt;m = np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])&lt;/code&gt; 
+and then we can obtain our desired vector by
+multiplying this matrix by the starting vector:
+&lt;code&gt;rot_vec = np.matmul(m, start_vec)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The center of our Cairo context is &lt;code&gt;(250, 250)&lt;/code&gt;. We can calculate this value
+from the size: &lt;code&gt;center = (size[0] // 2,) * 2&lt;/code&gt;. Then, we get the
+final vector using &lt;code&gt;vec = rot_vec + center&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let's put this all into a function called &lt;code&gt;get_coords_for_num&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;mod&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;
+&lt;span class="n"&gt;center&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="n"&gt;start_vec&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;center&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_coords_for_num&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;angle&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mf"&gt;2.0&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pi&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;
+    &lt;span class="n"&gt;sin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;angle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;cos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;angle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([[&lt;/span&gt;&lt;span class="n"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
+    &lt;span class="n"&gt;vec&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;matmul&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;start_vec&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;vec&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;center&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;center&lt;/code&gt; and &lt;code&gt;start_vec&lt;/code&gt; values were calculated so that the size
+of the image can easily be changed and everything will still work.&lt;/p&gt;
+&lt;h2&gt;Drawing the Circle&lt;/h2&gt;
+&lt;p&gt;Now that we know how to draw lines and how to get the 
+coordinates for points around our circle, let's bring
+the two parts together.&lt;/p&gt;
+&lt;p&gt;For each non-negative integer &lt;span class="math"&gt;\(num\)&lt;/span&gt; less than &lt;span class="math"&gt;\(mod\)&lt;/span&gt;, we want to
+multiply &lt;span class="math"&gt;\(num\)&lt;/span&gt; by &lt;span class="math"&gt;\(mult\)&lt;/span&gt;, and calculate the remainder
+when we divide this product by &lt;span class="math"&gt;\(mod\)&lt;/span&gt;. This is more
+commonly known as the &lt;em&gt;modulo&lt;/em&gt; operation, and we can
+find the remainder using: &lt;code&gt;rem = (num * mult) % mod&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This is what the code looks like after adding these changes:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;mult&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;
+
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ImageSurface&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Format&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ARGB32&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_line_width&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_source_rgb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="n"&gt;rem&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;mult&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;
+
+        &lt;span class="n"&gt;start_coords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_coords_for_num&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;move_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;start_coords&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;start_coords&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+        &lt;span class="n"&gt;end_coords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_coords_for_num&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;line_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;end_coords&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;end_coords&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+        &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stroke&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="n"&gt;circ_str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mod_&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;_mult_&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;mult&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write_to_png&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;complete_circle_&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;circ_str&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;.png&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We use the &lt;code&gt;get_coords_for_num&lt;/code&gt; function to get coordinates for points 
+and then the Cairo drawing functions to connect a start and end point
+on the circle, for all points on the circle.&lt;/p&gt;
+&lt;p&gt;Then we set the name of the circle to be something descriptive;
+in this case the generated image name will be
+&lt;code&gt;'complete_circle_mod_100_mult_5.png'&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Here's the full code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;cairo&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+
+&lt;span class="n"&gt;mod&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;
+&lt;span class="n"&gt;mult&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;
+
+&lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;500&lt;/span&gt;&lt;span class="p"&gt;,)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="n"&gt;center&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="n"&gt;start_vec&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;center&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_coords_for_num&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;angle&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mf"&gt;2.0&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pi&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt;
+    &lt;span class="n"&gt;sin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;angle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;cos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;angle&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([[&lt;/span&gt;&lt;span class="n"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
+    &lt;span class="n"&gt;vec&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;matmul&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;start_vec&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;vec&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;center&lt;/span&gt;
+
+
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ImageSurface&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Format&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ARGB32&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;context&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cairo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_line_width&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_source_rgb&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="n"&gt;rem&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;mult&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;
+
+        &lt;span class="n"&gt;start_coords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_coords_for_num&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;move_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;start_coords&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;start_coords&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+        &lt;span class="n"&gt;end_coords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_coords_for_num&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rem&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;line_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;end_coords&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;end_coords&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+        &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stroke&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="n"&gt;circ_str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mod_&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;_mult_&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;mult&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;surface&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write_to_png&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;complete_circle_&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;circ_str&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;.png&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;which I used to generate:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="complete_circle_mod_100_mult_5.png" src="https://yashaslokesh.github.io/images/complete_circle_mod_100_mult_5.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; I used the &lt;code&gt;RGB24&lt;/code&gt; format here instead of &lt;code&gt;ARGB32&lt;/code&gt;, so that the colors show properly.&lt;/p&gt;
+&lt;p&gt;You can vary the &lt;code&gt;mod&lt;/code&gt;, &lt;code&gt;mult&lt;/code&gt;, and colors to get some cooler-looking circles.
+Here are some other circles I've created:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mod = 287&lt;/code&gt;, &lt;code&gt;mult = 7&lt;/code&gt;, Fixed green to 1 and randomized red and blue values:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="circle 287, mult 7" src="https://yashaslokesh.github.io/images/circle_mod_287_with_mult_7.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mod = 12&lt;/code&gt;, &lt;code&gt;mult = 4&lt;/code&gt;, Fixed blue to 1 and randomized red and green values:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="circle 12, mult 4" src="https://yashaslokesh.github.io/images/circle_mod_12_with_mult_4.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mod = 200&lt;/code&gt;, &lt;code&gt;mult = 45&lt;/code&gt;, Fixed green to 1 and randomized red and blue values:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="circle 200, mult 45" src="https://yashaslokesh.github.io/images/circle_mod_200_with_mult_45.png"&gt;&lt;/p&gt;
+&lt;h2&gt;Next Steps&lt;/h2&gt;
+&lt;p&gt;If you use any of the code here and make your own visual, 
+tag me on Twitter @yashaslokesh_ so I can see it! &lt;/p&gt;
+&lt;p&gt;There will be a follow-up article to this one where I go over
+how to create a video showing the circle being generated. That
+article will use &lt;code&gt;ffmpeg&lt;/code&gt; and write intermediate
+images to the &lt;code&gt;ffmpeg&lt;/code&gt; process.
+Check back in a few weeks, for that article.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Thanks for reading, and I hope you learned more about
+pycairo, numpy, and modular arithmetic, if you were inexperienced
+in any of these topics before. &lt;/p&gt;
+&lt;p&gt;If you see any errors or suggestions for this article, feel free
+to file an issue on &lt;a href="https://github.com/yashaslokesh"&gt;the GitHub repo&lt;/a&gt;
+or contact me &lt;a href="https://twitter.com/yashaslokesh_"&gt;on Twitter&lt;/a&gt;.
+If you want to contact me about anything else, feel free
+to contact me &lt;a href="https://twitter.com/yashaslokesh_"&gt;on Twitter&lt;/a&gt;.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Python"></category><category term="python"></category><category term="pycairo"></category><category term="math"></category></entry><entry><title>PyAdventure Basic Inventory Update</title><link href="https://yashaslokesh.github.io/pyadventure-basic-inventory-update.html" rel="alternate"></link><published>2019-12-15T06:00:00-05:00</published><updated>2019-12-15T06:00:00-05:00</updated><author><name>Yashas Lokesh</name></author><id>tag:yashaslokesh.github.io,2019-12-15:/pyadventure-basic-inventory-update.html</id><summary type="html">&lt;p&gt;An update to my adventure game where I create the inventory interface and provide some basic controls for it.&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Setup&lt;/h2&gt;
 &lt;p&gt;So for my yet-to-be-named adventure game, I decided that one good area to make progress in
 would be creating an inventory system. In this post, I'll talk about how I created the
 basic interface for the inventory, including the controls for navigating around. This
@@ -14,7 +319,6 @@ necessary imports:&lt;/p&gt;
 
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;core.constants&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;c&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;The first two lines import the &lt;a href="https://www.pygame.org/news"&gt;pygame&lt;/a&gt; library and
 the set of constants from &lt;code&gt;pygame.locals&lt;/code&gt;. These constants are used when detecting
@@ -42,7 +346,6 @@ we're going to add a constructor, an &lt;code&gt;update()&lt;/code&gt; method, a
         &lt;span class="k"&gt;pass&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;We'll set a few constants for inventory size and position on the screen.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;constants.py&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;INVENTORY_SIZE&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;INVENTORY_WIDTH&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;INVENTORY_HEIGHT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
@@ -55,7 +358,6 @@ we're going to add a constructor, an &lt;code&gt;update()&lt;/code&gt; method, a
     &lt;span class="n"&gt;SCREEN_HEIGHT&lt;/span&gt; &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;INVENTORY_HEIGHT&lt;/span&gt; &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;And now we can work on the constructor. We want the active item, i.e. the box
 that the player has currently selected, to start at some constant, say &lt;code&gt;[0,0]&lt;/code&gt;,
@@ -86,14 +388,13 @@ it with four lists of four RBG triples each.&lt;/p&gt;
                 &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sample_item_colors&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;g&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Note that we use the &lt;code&gt;self.&lt;/code&gt; syntax to indicate instance variables.
 This code just sets up a rough visual look for the inventory. Next, we want to
 draw this inventory to the screen. The &lt;code&gt;blit()&lt;/code&gt; method of a &lt;code&gt;Surface&lt;/code&gt; object will
 draw one surface onto another. &lt;/p&gt;
 &lt;p&gt;&lt;code&gt;inventory.py&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Inventory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;screen&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pygame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Surface&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="n"&gt;pygame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;screen&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;172&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;237&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;182&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -109,7 +410,6 @@ draw one surface onto another. &lt;/p&gt;
                 &lt;span class="n"&gt;pygame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;draw&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;screen&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sample_item_colors&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;item_rect&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;This code draws a &lt;code&gt;rect&lt;/code&gt; of a light-green color, almost like the color of jade. Then it copies the
 rect of the inventory object and adjusts the size to draw each tile of the inventory. The 
 inventory's rect is copied because it already has the correct &lt;code&gt;(x, y)&lt;/code&gt; coordinates. Then, we
@@ -123,7 +423,7 @@ earlier. We'll be mutating this list as we receive input. We can create an &lt;c
 that accepts an object describing a keydown event.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;inventory.py&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Inventory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;keydown_event&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;keydown_event&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;K_DOWN&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
             &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;active_item&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
@@ -134,7 +434,6 @@ that accepts an object describing a keydown event.&lt;/p&gt;
         &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;keydown_event&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;K_RIGHT&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
             &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;active_item&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;To use this method, we need to pass in an appropriate event. How do we do that? All pygame events 
 can be obtained using &lt;code&gt;pygame.event.get()&lt;/code&gt;, and as we iterate through the returned collection, if
@@ -168,7 +467,6 @@ of the inventory square.&lt;/p&gt;
             &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;active_item&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Now we actually need to use the &lt;code&gt;active_item&lt;/code&gt; list to draw a selection box. Back to the &lt;code&gt;draw()&lt;/code&gt;
 method, we can do something similar to drawing the tiles for each item rectangle from before.
 We want it to have the same size and start from the same &lt;code&gt;x, y&lt;/code&gt; coordinates, but this
@@ -178,9 +476,9 @@ a frame, so that the frame encloses the selected object.&lt;/p&gt;
 than or equal to 75. I'll pick 20, and add it to &lt;code&gt;constants.py&lt;/code&gt; as &lt;code&gt;SELECTION_BOX_THICKNESS = 20&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;inventory.py&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Inventory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;screen&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pygame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Surface&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted draw code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted draw code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
         &lt;span class="n"&gt;selection_box&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rect&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
         &lt;span class="n"&gt;selection_box&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;150&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;150&lt;/span&gt;
         &lt;span class="n"&gt;selection_box&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;active_item&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;150&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
@@ -197,7 +495,6 @@ than or equal to 75. I'll pick 20, and add it to &lt;code&gt;constants.py&lt;/co
         &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Here's the extra code added in the &lt;code&gt;draw()&lt;/code&gt; method. &lt;code&gt;pygame&lt;/code&gt; draws the thickness of the box 
 outwards, so we need to adjust the &lt;code&gt;x, y&lt;/code&gt; coordinates to
 start closer to actual size of the box and then adjust the &lt;code&gt;width&lt;/code&gt; and &lt;code&gt;height&lt;/code&gt; to constrain
@@ -211,9 +508,9 @@ to draw the inventory, we access it through our player and call the draw method 
 screen surface.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;game.py&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Game&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; omitted code &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
         &lt;span class="n"&gt;running&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;
         &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="n"&gt;running&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
             &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;event&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;pygame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;event&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
@@ -226,7 +523,6 @@ screen surface.&lt;/p&gt;
 
             &lt;span class="n"&gt;pygame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flip&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;What if the player is just interacting
 with the other parts of the game, not the inventory? Then we shouldn't be updating the selection
@@ -261,7 +557,6 @@ active.&lt;/p&gt;
             &lt;span class="n"&gt;pygame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;display&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;flip&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The &lt;code&gt;player&lt;/code&gt; sprite has an inventory, and we update and draw that one. &lt;/p&gt;
 &lt;p&gt;All the code I used can be found on &lt;a href="https://github.com/yashaslokesh/pyadventure"&gt;my GitHub&lt;/a&gt;. 
 If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
@@ -277,14 +572,12 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="nc"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ndarray&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The image array we get will have three channels corresponding to the (R, G, B) values of a pixel with one extra channel if the image format includes an alpha layer. How can we check if we have a PNG or JPEG image? We can use &lt;code&gt;image_arr.shape&lt;/code&gt;. The returned 3-tuple will have the number of channels in the third slot.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;image&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;circle.png&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;image_arr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;image_arr&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;
 &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;99&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;99&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Now we have a usable array and we can invert the colors. Mathematically, to invert the color of one pixel, we subtract the pixel's color values from the maximum, 255. If we have a PNG format image, then we have an extra alpha channel that we don't want to modify, or the transparent parts of the image won't be transparent anymore. We can use numpy slice notation to modify all dimensions of the array.&lt;/p&gt;
 &lt;p&gt;If the number of channels is four, we'll just add the unaltered alpha channel on top of the inverted colors array and create an &lt;code&gt;Image&lt;/code&gt; with it. An &lt;code&gt;Image&lt;/code&gt; can be created with the &lt;code&gt;Image.fromarray()&lt;/code&gt; method.&lt;/p&gt;
@@ -293,7 +586,6 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;is_png&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;image_arr&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;One last thing: If we extract the alpha channel, the returned array has a size &lt;code&gt;(99, 99)&lt;/code&gt;. If we want to stack the alpha channel on top of our inverted colors array, then we have to use the &lt;code&gt;numpy.dstack&lt;/code&gt; function. With all this down, we can finish inverting our image:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;is_png&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -305,7 +597,6 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;inverted_img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fromarray&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;inverted_arr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;I ran this code on a PNG image to test, turned this (there's a white circle in the middle there) &lt;img alt="original circle" src="images/shooter.png" title="Circle Shooter"&gt; into this &lt;img alt="inverted circle" src="images/shooter-inv.png" title="Inverted Circle Shooter"&gt;. &lt;/p&gt;
 &lt;p&gt;Thanks for reading, I hope you learned how to use &lt;code&gt;Pillow&lt;/code&gt; and &lt;code&gt;Numpy&lt;/code&gt; to invert image colors without any external software. If you have any comments, questions, or suggestions, feel free to contact me on &lt;a href="https://twitter.com/yashaslokesh_"&gt;Twitter&lt;/a&gt;.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="numpy"></category><category term="pillow"></category></entry><entry><title>Generator Expressions and List Comprehensions</title><link href="https://yashaslokesh.github.io/generator-expressions-and-list-comprehensions.html" rel="alternate"></link><published>2019-01-08T08:46:00-05:00</published><updated>2019-01-08T08:46:00-05:00</updated><author><name>Yashas Lokesh</name></author><id>tag:yashaslokesh.github.io,2019-01-08:/generator-expressions-and-list-comprehensions.html</id><summary type="html">&lt;p&gt;We learn about generator expressions and list comprehensions, useful ways to create iterators and lists, respectively.&lt;/p&gt;</summary><content type="html">&lt;p&gt;Generator expressions and list comprehensions are functional programming tools that are very useful in creating iterators and lists, respectively.&lt;/p&gt;
@@ -320,7 +611,6 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;25&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;36&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;49&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;81&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;List comprehensions provide a more readable way to create lists. We can use it to create a list of the first 10 numbers, only even numbers, or only include numbers that satisfy some other requirement. Here's a way to create a list of all numbers under 20, and then all numbers below 20:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;numbers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;numbers&lt;/span&gt;
@@ -331,14 +621,12 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;14&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;16&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Here we see two basic syntax structures for creating list comprehensions. We can use &lt;strong&gt;i for i in iterable&lt;/strong&gt;, where &lt;strong&gt;iterable&lt;/strong&gt; is a generator, list, string, or some other iterable. You can check if an object is iterable by checking for the &lt;strong&gt;&lt;strong&gt;iter&lt;/strong&gt;()&lt;/strong&gt; magic method, and these are two ways to do it:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__iter__&amp;#39;&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;dir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kc"&gt;True&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;hasattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;__iter__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kc"&gt;True&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;You can also make list comprehensions with the &lt;strong&gt;if...else&lt;/strong&gt; pattern as many times as needed:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;bool_evens&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
@@ -354,7 +642,6 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;div by 2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;div by 2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;div by 3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;div by 2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;div by 2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;div by 2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;div by 3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Generator expressions are created the same way as list comprehensions but with parentheses around the expression instead of square brackets. To get all of the elements in the generator, you can iterate over it. When you want to create a list to iterate over, generator expressions can be used instead for an increase in performance. The increase in performance comes from not storing all of the elements in the iterable beforehand. The generator expression supplies elements as the iterator asks for them.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;evens_gen&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;evens_gen&lt;/span&gt;
@@ -367,7 +654,6 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;
 &lt;span class="mi"&gt;90&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;If you want to create dictionaries or sets using these expressions, you can! Here are some examples:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;num_set&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt;
@@ -383,7 +669,6 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;3&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;4&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;6&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;7&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;8&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;9&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The difference between set and dictionary comprehensions is that dictionary comprehensions have a &lt;strong&gt;key:value&lt;/strong&gt; pair as the element you're inserting into the dictionary. Both set and dictionary comprehensions use curly braces instead of square brackets or parentheses.&lt;/p&gt;
 &lt;p&gt;Make sure not to use these expressions for a side-effect. These expressions should be used to create iterables. If you wanted to print out all even numbers below 10, you should use a for loop instead of a generator or a list:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Use this:&lt;/span&gt;
@@ -395,7 +680,6 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;It can be memory-expensive to create a large list, and if you're only using the list for its side-effects, then the list is thrown away after you create it and you potentially lost a lot of performance speed creating the intermediate list.&lt;/p&gt;
 &lt;p&gt;Thanks for reading! If you have any comments, questions, or suggestions for improvement, feel free to contact me on &lt;a href="https://twitter.com/yashaslokesh_"&gt;Twitter&lt;/a&gt;.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category></entry><entry><title>Project Euler Problem #125</title><link href="https://yashaslokesh.github.io/project-euler-problem-125.html" rel="alternate"></link><published>2018-12-31T11:58:00-05:00</published><updated>2018-12-31T11:58:00-05:00</updated><author><name>Yashas Lokesh</name></author><id>tag:yashaslokesh.github.io,2018-12-31:/project-euler-problem-125.html</id><summary type="html">&lt;p&gt;Solving &lt;a href="https://projecteuler.net/problem=125"&gt;Project Euler's problem #125&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;Here's the &lt;a href="https://projecteuler.net/problem=125"&gt;problem link&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you haven't attempted solving this problem, yet, go try it first!!&lt;/p&gt;
@@ -406,14 +690,17 @@ If you have any questions, you can easily contact me on Twitter. &lt;/p&gt;
 9,999^2 + 9,998^2 = 199940005
 $$&lt;/div&gt;
 &lt;p&gt;An extreme example, but it illustrates the need for an extra limit-check. Let's add in a check for if our temporary sum is greater than the limit; if it is, we'll exit the inner loop and continue with a new start integer for our temporary sum.&lt;/p&gt;
-&lt;p&gt;Here's what our code looks like so far:
-&lt;script src="https://gist.github.com/yashaslokesh/73a32aed50c87bda7d739e9284467056.js"&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;Here's what our code looks like so far:&lt;/p&gt;
+&lt;script src="https://gist.github.com/yashaslokesh/73a32aed50c87bda7d739e9284467056.js"&gt;&lt;/script&gt;
+
 &lt;p&gt;Okay, now we'll be generating all numbers which are sums of squares of consecutive integers. This is where we check if the number is a palindrome! Python makes this extremely easy with their slice objects syntax. Any &lt;strong&gt;str&lt;/strong&gt; type in Python is an iterable, so we can use the syntax &lt;strong&gt;iterable[start:stop:step]&lt;/strong&gt; to reverse a string: &lt;strong&gt;string[::-1]&lt;/strong&gt;. We omit the start and stop, so the whole string is included, and then we use &lt;strong&gt;-1&lt;/strong&gt; as the step size, which will reverse the string, then, we can check if the number is a palindrome by first converting it to a string, and then comparing this string to its reversed version. If they equal, then we have a palindrome.&lt;/p&gt;
 &lt;p&gt;If the candidate number is indeed a palindrome, then we have to add it to the overall sum we're trying to find. Recall: the sum of palindromic numbers which, in turn, can be written as the sum of squares of consecutive integers. So let's make a &lt;strong&gt;result_sum = 0&lt;/strong&gt; that we'll add to if a number is a palindrome.&lt;/p&gt;
-&lt;p&gt;Here's the updated code:
-&lt;script src="https://gist.github.com/yashaslokesh/4ed6d1e48b6143d19f26c9cd96ca59c8.js"&gt;&lt;/script&gt;&lt;/p&gt;
-&lt;p&gt;The last if-statement is ugly, so we'll turn it into a function to make our code cleaner and easier to read:
-&lt;script src="https://gist.github.com/yashaslokesh/a8fe484a57bab4d18db150f7f68f0dc7.js"&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;Here's the updated code:&lt;/p&gt;
+&lt;script src="https://gist.github.com/yashaslokesh/4ed6d1e48b6143d19f26c9cd96ca59c8.js"&gt;&lt;/script&gt;
+
+&lt;p&gt;The last if-statement is ugly, so we'll turn it into a function to make our code cleaner and easier to read:&lt;/p&gt;
+&lt;script src="https://gist.github.com/yashaslokesh/a8fe484a57bab4d18db150f7f68f0dc7.js"&gt;&lt;/script&gt;
+
 &lt;p&gt;There's still one case we haven't considered: what if two different sums turn out to be the same? This has an easy fix, let's keep track of every number. We could use a list or a set.&lt;/p&gt;
 &lt;p&gt;In the case of a list, we add the temporary sum to the result sum if and only if the temporary sum is not in the list and the temporary sum is a palindrome. Otherwise, we can just continue the inner loop without any special case handling. If we want to use a set, we know that a set contains only unique elements. With a set, we know that the sum of all the elements in the final set will be the answer we're looking for, so we wouldn't need a result sum in this case. I've included both cases below:&lt;/p&gt;
 &lt;script src="https://gist.github.com/yashaslokesh/be8bd509220b9b7fbe7d66dc5fa47a6d.js"&gt;&lt;/script&gt;
@@ -499,8 +786,9 @@ In particular, they list this formula:
  \end{pmatrix}
 $$&lt;/div&gt;
 &lt;p&gt;I realized that I could use numpy to represent the first matrix, and I could use a loop up to a number &lt;em&gt;n&lt;/em&gt;, continuously multiplying a resultant matrix with the first matrix above. This is one way to get a O(&lt;em&gt;n&lt;/em&gt;) algorithm.&lt;/p&gt;
-&lt;p&gt;Here's the code for a linear fibonacci function. I know numpy has a matrix_power() method, but that method is optimized for calculation and doesn't help to demonstrate the linear runtime of the code below.
-&lt;script src="https://gist.github.com/yashaslokesh/604c6343478eea17c5171b386d186008.js"&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;Here's the code for a linear fibonacci function. I know numpy has a matrix_power() method, but that method is optimized for calculation and doesn't help to demonstrate the linear runtime of the code below.&lt;/p&gt;
+&lt;script src="https://gist.github.com/yashaslokesh/604c6343478eea17c5171b386d186008.js"&gt;&lt;/script&gt;
+
 &lt;p&gt;Now to make the O(log &lt;em&gt;n&lt;/em&gt;) algorithm. These types of algorithms are usually created by splitting the input in half many times. I chose an arbitrary &lt;em&gt;n&lt;/em&gt;=10. The exponent rule of  &lt;/p&gt;
 &lt;div class="math"&gt;$$ a^n * a^m = a^{n + m} (1) $$&lt;/div&gt;
 &lt;p&gt;
